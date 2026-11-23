@@ -1,29 +1,56 @@
-// Minimal sensor simulator: N sensors publish fill levels on sensores/{sensor_id}/leitura (QoS 1).
-// shortcut: plain MQTT on 1883 with no per-sensor credentials, fixed fill curve; KAN-48 adds TLS 8883, credentials, peaks and silent sensors.
+// Sensor simulator (KAN-48): each sensor is its own MQTT client publishing on sensores/{sensor_id}/leitura (QoS 1).
+// Config and behaviour: decisions doc §7 and .env.example.
+import { readFileSync } from 'node:fs';
 import mqtt from 'mqtt';
+import { ZONAS_PADRAO, horaAcores, proximoNivel, taxaAtual } from './sim.js';
 
-const url = process.env.MQTT_URL ?? 'mqtt://localhost:1883';
-const count = Number(process.env.SENSORS ?? 3);
-const intervalMs = Number(process.env.INTERVAL_MS ?? 5000);
+const env = process.env;
+const url = env.MQTT_URL || 'mqtt://localhost:1883';
+const ca = env.MQTT_CA ? readFileSync(env.MQTT_CA) : undefined;
+const intervalMs = Number(env.INTERVAL_MS || 5000);
+const speed = Number(env.SPEED || 1);
+const zonas = { ...ZONAS_PADRAO, ...JSON.parse(env.ZONAS_JSON || '{}') };
 
-const sensors = Array.from({ length: count }, (_, i) => ({
-  id: `SNS-SIM-${String(i + 1).padStart(3, '0')}`,
-  level: Math.random() * 50,
-}));
+const configs = env.SENSORS_JSON
+  ? JSON.parse(env.SENSORS_JSON)
+  : Array.from({ length: Number(env.SENSORS || 3) }, (_, i) => ({
+      id: `SNS-SIM-${String(i + 1).padStart(3, '0')}`,
+      zona: i % 2 === 0 ? 'turistica' : 'residencial',
+    }));
 
-const client = mqtt.connect(url, { reconnectPeriod: 2000 });
-client.on('connect', () => console.log(`ligado a ${url}, ${count} sensores`));
-client.on('error', (err) => console.error('erro MQTT:', err.message));
+for (const c of configs) {
+  if (!c.id) throw new Error('SENSORS_JSON: sensor sem id');
+  if (!zonas[c.zona]) throw new Error(`${c.id}: zona desconhecida "${c.zona}"`);
+}
 
+function ligar(nome, username, password) {
+  const client = mqtt.connect(url, {
+    clientId: nome,
+    username: password ? username : undefined,
+    password,
+    ca,
+    protocolVersion: 5,
+  });
+  client.on('connect', () => console.log(`${nome}: ligado a ${url}`));
+  client.on('error', (err) => console.error(`${nome}: ${err.message}`));
+  return client;
+}
+
+const sensores = configs.map((c) => ({ ...c, nivel: Math.random() * 50, client: ligar(c.id, c.id, c.password) }));
+
+let ultimo = Date.now();
 setInterval(() => {
-  if (!client.connected) return;
-  for (const s of sensors) {
-    s.level = s.level >= 100 ? 0 : Math.min(100, s.level + Math.random() * 5);
-    const leitura = {
-      sensor_id: s.id,
-      nivel_enchimento: Number(s.level.toFixed(1)),
-      data_hora: new Date().toISOString(),
-    };
-    client.publish(`sensores/${s.id}/leitura`, JSON.stringify(leitura), { qos: 1 });
+  const agora = Date.now();
+  const hora = horaAcores(new Date(agora));
+  for (const s of sensores) {
+    s.nivel = proximoNivel(s.nivel, taxaAtual(zonas[s.zona], hora, s.taxa_pct_h), agora - ultimo, speed);
+    if (!s.client.connected) continue;
+    const leitura = { sensor_id: s.id, nivel_enchimento: Number(s.nivel.toFixed(1)), data_hora: new Date(agora).toISOString() };
+    s.client.publish(`sensores/${s.id}/leitura`, JSON.stringify(leitura), { qos: 1 }, (err) => {
+      if (err) console.error(`${s.id}: publicação recusada: ${err.message}`);
+    });
   }
+  ultimo = agora;
 }, intervalMs);
+
+console.log(`${sensores.length} sensores, intervalo ${intervalMs} ms, SPEED ${speed}`);
