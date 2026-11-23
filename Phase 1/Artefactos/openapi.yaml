@@ -1,0 +1,2948 @@
+openapi: "3.0.3"
+info:
+  title: "TrashCanned API — Monitorização e Gestão de Resíduos Urbanos e Turísticos"
+  version: "3.0.0"
+  description: |
+    Especificação OpenAPI 3.0.3 (v3) alinhada com a Arquitetura TrashCanned (API-Led Connectivity + Event-Driven + WebSockets) e com o Modelo de Domínio v2.
+    
+    Camadas Arquiteturais:
+    - System APIs (/api/v1/system/...): Camada interna de abstração sobre PostgreSQL e o adaptador OpenRouteService (VROOM).
+    - Process APIs (/api/v1/process/...): Orquestração de regras de negócio (Contas e acessos, Inventário, Monitorização 80%/95%, Alertas e Rotas).
+    - Experience APIs (/api/v1/exp/...): Gateways dedicados por perfil (Admin, Técnico, Operador, Supervisor) e Parceiro (Portal da Câmara).
+    
+    Comunicação Assíncrona e Tempo Real:
+    - Ingestão IoT: Simulador de sensores publica eventos MQTT (leitura.recebida a cada 15 min ou delta >= 10 pontos) no RabbitMQ, consumidos pelo Worker de ingestão.
+    - Notificações Push: Process APIs publicam eventos (alerta.criado, rota.gerada) no RabbitMQ, entregues à Web App (React + Leaflet) pelo WebSocket Gateway (wss + JWT).
+  contact:
+    name: "Equipa Projeto Engenharia de Software - Universidade dos Açores"
+servers:
+  - url: "https://api.trashcanned-uac.pt/api/v1"
+    description: "Servidor de Produção"
+  - url: "http://localhost:8000/api/v1"
+    description: "Ambiente Local de Desenvolvimento"
+tags:
+  - name: "System - Leituras"
+    description: "Persistência e consulta histórica de leituras IoT (PostgreSQL)"
+  - name: "System - Utilizadores"
+    description: "Operações CRUD base sobre contas e perfis de utilizador"
+  - name: "System - Sensores"
+    description: "Operações CRUD base sobre sensores IoT e calibrações"
+  - name: "System - Contentores"
+    description: "Operações CRUD base sobre contentores, coordenadas e limiares (80% / 95%)"
+  - name: "System - Alertas"
+    description: "Persistência e atualização de estado de alertas operacionais"
+  - name: "System - Rotas e Paragens"
+    description: "Persistência de rotas, paragens ordenadas e recolhas efetuadas"
+  - name: "System - Otimização (ORS)"
+    description: "Adaptador interno para o motor OpenRouteService /optimization (VROOM)"
+  - name: "Process - Contas e Acessos"
+    description: "Autenticação JWT e gestão de utilizadores"
+  - name: "Process - Inventário"
+    description: "Orquestração do ciclo de vida de contentores, sensores e calibrações"
+  - name: "Process - Monitorização"
+    description: "Agregação de estado atual e séries temporais (limiares 80% / 95%)"
+  - name: "Process - Alertas"
+    description: "Criação, reconhecimento, resolução e publicação de eventos alerta.criado"
+  - name: "Process - Rotas"
+    description: "Geração otimizada, aprovação, ajuste, início de rota e registo de recolhas"
+  - name: "Experience - Autenticação"
+    description: "Login na plataforma Web (React + Leaflet)"
+  - name: "Experience - Admin API"
+    description: "Gateway de administração de contas, contentores, sensores e monitorização"
+  - name: "Experience - Técnico API"
+    description: "Gateway de manutenção de sensores, calibrações e alertas técnicos"
+  - name: "Experience - Operador API"
+    description: "Gateway operacional de mapa (OSM/Leaflet), rotas atribuídas, recolhas e alertas"
+  - name: "Experience - Supervisor API"
+    description: "Gateway de aprovação/ajuste de rotas, relatórios e supervisão de alertas"
+  - name: "Experience - Parceiro API"
+    description: "Gateway externo para o Portal da Câmara Municipal (consumidor institucional)"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: "Token JWT obtido em POST /exp/auth/login, contendo o ID e o perfil (role) do utilizador."
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: "X-API-Key"
+      description: "Chave de autenticação para comunicação interna entre camadas (Worker/Process -> System) e acesso do Portal da Câmara (Parceiro API)."
+  parameters:
+    PageParam:
+      name: page
+      in: query
+      description: "Número da página para paginação (inicia em 1)."
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+    LimitParam:
+      name: limit
+      in: query
+      description: "Número máximo de registos por página."
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        maximum: 100
+        default: 20
+  responses:
+    BadRequest:
+      description: "Dados de entrada inválidos ou malformados."
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/ErrorResponse"
+          example:
+            status: 400
+            error: "Bad Request"
+            message: "O campo nivel_enchimento deve estar compreendido entre 0 e 100."
+            timestamp: "2026-10-19T14:30:00Z"
+    Unauthorized:
+      description: "Autenticação em falta, token JWT expirado ou API Key inválida."
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/ErrorResponse"
+          example:
+            status: 401
+            error: Unauthorized
+            message: "Credenciais ou token de autenticação inválidos."
+            timestamp: "2026-10-19T14:30:00Z"
+    Forbidden:
+      description: "O perfil do utilizador autenticado não tem permissão para executar esta operação."
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/ErrorResponse"
+          example:
+            status: 403
+            error: Forbidden
+            message: "Acesso negado para o perfil atual."
+            timestamp: "2026-10-19T14:30:00Z"
+    NotFound:
+      description: "O recurso solicitado não foi encontrado."
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/ErrorResponse"
+          example:
+            status: 404
+            error: "Not Found"
+            message: "O identificador indicado não existe."
+            timestamp: "2026-10-19T14:30:00Z"
+    UnprocessableEntity:
+      description: "Violação de regra de negócio (ex. iniciar rota ainda não aprovada)."
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/ErrorResponse"
+          example:
+            status: 422
+            error: "Unprocessable Entity"
+            message: "Apenas rotas no estado APROVADA podem ser iniciadas."
+            timestamp: "2026-10-19T14:30:00Z"
+  schemas:
+    ErrorResponse:
+      type: object
+      required:
+        - status
+        - error
+        - message
+        - timestamp
+      properties:
+        status:
+          type: integer
+          example: 400
+        error:
+          type: string
+          example: "Bad Request"
+        message:
+          type: string
+          example: "Parâmetros inválidos no pedido."
+        timestamp:
+          type: string
+          format: "date-time"
+          example: "2026-10-19T14:30:00Z"
+    LoginRequest:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+          example: "operador.silva@ecoacores.pt"
+        password:
+          type: string
+          format: password
+          minLength: 8
+          example: "SenhaSegura2026!"
+    AuthResponse:
+      type: object
+      required:
+        - access_token
+        - token_type
+        - expires_in
+        - utilizador
+      properties:
+        access_token:
+          type: string
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+        token_type:
+          type: string
+          example: Bearer
+        expires_in:
+          type: integer
+          example: 3600
+        utilizador:
+          "$ref": "#/components/schemas/Utilizador"
+    Utilizador:
+      type: object
+      required:
+        - id
+        - nome
+        - email
+        - role
+        - ativo
+      properties:
+        id:
+          type: integer
+          example: 12
+        nome:
+          type: string
+          example: "João Silva"
+        email:
+          type: string
+          format: email
+          example: "operador.silva@ecoacores.pt"
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - SUPERVISOR
+            - OPERADOR
+            - TECNICO
+          example: OPERADOR
+        ativo:
+          type: boolean
+          example: true
+        empresa:
+          type: string
+          nullable: true
+          example: "EcoAçores Serviços Ambientais, Lda."
+    UtilizadorCreateRequest:
+      type: object
+      required:
+        - nome
+        - email
+        - password
+        - role
+      properties:
+        nome:
+          type: string
+          example: "João Silva"
+        email:
+          type: string
+          format: email
+          example: "operador.silva@ecoacores.pt"
+        password:
+          type: string
+          format: password
+          minLength: 8
+          example: "TempPass2026!"
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - SUPERVISOR
+            - OPERADOR
+            - TECNICO
+          example: OPERADOR
+        ativo:
+          type: boolean
+          default: true
+        empresa:
+          type: string
+          nullable: true
+          example: "EcoAçores Serviços Ambientais, Lda."
+    UtilizadorUpdateRequest:
+      type: object
+      properties:
+        nome:
+          type: string
+          example: "João Manuel Silva"
+        role:
+          type: string
+          enum:
+            - ADMIN
+            - SUPERVISOR
+            - OPERADOR
+            - TECNICO
+        ativo:
+          type: boolean
+          example: true
+        empresa:
+          type: string
+          nullable: true
+    Contentor:
+      type: object
+      required:
+        - id
+        - zona
+        - localizacao
+        - capacidade
+        - nivel_atual
+        - limiar_aviso
+        - limiar_critico
+      properties:
+        id:
+          type: string
+          example: "CNT-MIR-004"
+        zona:
+          type: string
+          example: "Miradouro da Vista do Rei"
+        localizacao:
+          type: array
+          minItems: 2
+          maxItems: 2
+          items:
+            type: number
+            format: float
+          example:
+            - 37.8396
+            - -25.7942
+        capacidade:
+          type: number
+          format: float
+          example: 1100.0
+        nivel_atual:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+          example: 82.5
+        limiar_aviso:
+          type: number
+          format: float
+          default: 80.0
+          example: 80.0
+        limiar_critico:
+          type: number
+          format: float
+          default: 95.0
+          example: 95.0
+        ultima_recolha:
+          type: string
+          format: "date-time"
+          nullable: true
+          example: "2026-10-18T09:10:00Z"
+    ContentorCreateRequest:
+      type: object
+      required:
+        - id
+        - zona
+        - localizacao
+        - capacidade
+      properties:
+        id:
+          type: string
+          example: "CNT-MIR-005"
+        zona:
+          type: string
+          example: "Miradouro de Santa Iria"
+        localizacao:
+          type: array
+          minItems: 2
+          maxItems: 2
+          items:
+            type: number
+            format: float
+          example:
+            - 37.8185
+            - -25.4951
+        capacidade:
+          type: number
+          format: float
+          example: 800.0
+        nivel_atual:
+          type: number
+          format: float
+          default: 0.0
+        limiar_aviso:
+          type: number
+          format: float
+          default: 80.0
+        limiar_critico:
+          type: number
+          format: float
+          default: 95.0
+    ContentorPatchRequest:
+      type: object
+      properties:
+        zona:
+          type: string
+        nivel_atual:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+        limiar_aviso:
+          type: number
+          format: float
+          minimum: 1
+          maximum: 100
+        limiar_critico:
+          type: number
+          format: float
+          minimum: 1
+          maximum: 100
+        ultima_recolha:
+          type: string
+          format: "date-time"
+          nullable: true
+    Sensor:
+      type: object
+      required:
+        - id
+        - contentor_id
+        - estado
+      properties:
+        id:
+          type: string
+          example: "SNS-MIR-004A"
+        contentor_id:
+          type: string
+          example: "CNT-MIR-004"
+        estado:
+          type: string
+          enum:
+            - FUNCIONAL
+            - AVARIADO
+          example: FUNCIONAL
+        ultima_comunicacao:
+          type: string
+          format: "date-time"
+          nullable: true
+          example: "2026-10-19T14:25:00Z"
+    SensorCreateRequest:
+      type: object
+      required:
+        - id
+        - contentor_id
+      properties:
+        id:
+          type: string
+          example: "SNS-MIR-005A"
+        contentor_id:
+          type: string
+          example: "CNT-MIR-005"
+        estado:
+          type: string
+          enum:
+            - FUNCIONAL
+            - AVARIADO
+          default: FUNCIONAL
+    SensorPatchRequest:
+      type: object
+      properties:
+        estado:
+          type: string
+          enum:
+            - FUNCIONAL
+            - AVARIADO
+        ultima_comunicacao:
+          type: string
+          format: "date-time"
+    LeituraInput:
+      type: object
+      required:
+        - sensor_id
+        - nivel_enchimento
+        - data_hora
+      properties:
+        sensor_id:
+          type: string
+          example: "SNS-MIR-004A"
+        nivel_enchimento:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 100
+          example: 96.2
+        data_hora:
+          type: string
+          format: "date-time"
+          example: "2026-10-19T14:25:00Z"
+    Leitura:
+      allOf:
+        - type: object
+          required:
+            - id
+          properties:
+            id:
+              type: integer
+              example: 9842
+        - "$ref": "#/components/schemas/LeituraInput"
+    AlertaInput:
+      type: object
+      required:
+        - contentor_id
+        - tipo
+        - descricao
+      properties:
+        contentor_id:
+          type: string
+          example: "CNT-MIR-004"
+        tipo:
+          type: string
+          enum:
+            - AVISO_ENCHIMENTO
+            - ENCHIMENTO_CRITICO
+            - SENSOR_AVARIADO
+          example: ENCHIMENTO_CRITICO
+        descricao:
+          type: string
+          example: "Contentor CNT-MIR-004 atingiu 96.2% (limiar crítico: 95%)."
+    Alerta:
+      type: object
+      required:
+        - id
+        - contentor_id
+        - tipo
+        - data
+        - descricao
+        - estado
+      properties:
+        id:
+          type: integer
+          example: 305
+        contentor_id:
+          type: string
+          example: "CNT-MIR-004"
+        tipo:
+          type: string
+          enum:
+            - AVISO_ENCHIMENTO
+            - ENCHIMENTO_CRITICO
+            - SENSOR_AVARIADO
+          example: ENCHIMENTO_CRITICO
+        data:
+          type: string
+          format: "date-time"
+          example: "2026-10-19T14:25:02Z"
+        descricao:
+          type: string
+          example: "Contentor CNT-MIR-004 atingiu 96.2% (limiar crítico: 95%)."
+        estado:
+          type: string
+          enum:
+            - ATIVO
+            - RECONHECIDO
+            - RESOLVIDO
+          example: ATIVO
+        reconhecido_por_id:
+          type: integer
+          nullable: true
+          example: null
+        resolvido_por_id:
+          type: integer
+          nullable: true
+          example: null
+    Paragem:
+      type: object
+      required:
+        - id
+        - ordem
+        - contentor
+        - recolhida
+      properties:
+        id:
+          type: integer
+          example: 51
+        ordem:
+          type: integer
+          minimum: 1
+          example: 1
+        contentor:
+          "$ref": "#/components/schemas/Contentor"
+        recolhida:
+          type: boolean
+          example: false
+    Rota:
+      type: object
+      required:
+        - id
+        - data
+        - estado
+        - paragens
+      properties:
+        id:
+          type: integer
+          example: 18
+        data:
+          type: string
+          format: date
+          example: "2026-10-20"
+        hora_inicio:
+          type: string
+          format: "date-time"
+          nullable: true
+          example: null
+        hora_fim:
+          type: string
+          format: "date-time"
+          nullable: true
+          example: null
+        estado:
+          type: string
+          enum:
+            - GERADA
+            - APROVADA
+            - EM_CURSO
+            - CONCLUIDA
+          example: APROVADA
+        supervisor_id:
+          type: integer
+          nullable: true
+          example: 4
+        operador_id:
+          type: integer
+          nullable: true
+          example: 12
+        distancia_estimada_km:
+          type: number
+          format: float
+          nullable: true
+          example: 24.6
+        duracao_estimada_min:
+          type: integer
+          nullable: true
+          example: 48
+        paragens:
+          type: array
+          items:
+            "$ref": "#/components/schemas/Paragem"
+    RotaCreateRequest:
+      type: object
+      required:
+        - data
+        - paragens
+      properties:
+        data:
+          type: string
+          format: date
+          example: "2026-10-20"
+        distancia_estimada_km:
+          type: number
+          format: float
+          example: 24.6
+        duracao_estimada_min:
+          type: integer
+          example: 48
+        paragens:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required:
+              - contentor_id
+              - ordem
+            properties:
+              contentor_id:
+                type: string
+                example: "CNT-MIR-004"
+              ordem:
+                type: integer
+                minimum: 1
+                example: 1
+    RotaAjusteRequest:
+      type: object
+      required:
+        - paragens
+      properties:
+        operador_id:
+          type: integer
+          nullable: true
+          example: 12
+        paragens:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required:
+              - contentor_id
+              - ordem
+            properties:
+              contentor_id:
+                type: string
+                example: "CNT-MIR-004"
+              ordem:
+                type: integer
+                minimum: 1
+                example: 1
+    RecolhaInput:
+      type: object
+      required:
+        - data_hora
+      properties:
+        data_hora:
+          type: string
+          format: "date-time"
+          example: "2026-10-20T09:15:00Z"
+        observacoes:
+          type: string
+          nullable: true
+          example: "Recolha efetuada sem anomalias."
+    Recolha:
+      type: object
+      required:
+        - id
+        - paragem_id
+        - operador_id
+        - data_hora
+      properties:
+        id:
+          type: integer
+          example: 88
+        paragem_id:
+          type: integer
+          example: 51
+        operador_id:
+          type: integer
+          example: 12
+        data_hora:
+          type: string
+          format: "date-time"
+          example: "2026-10-20T09:15:00Z"
+        observacoes:
+          type: string
+          nullable: true
+    CalibracaoInput:
+      type: object
+      required:
+        - data
+        - observacoes
+      properties:
+        data:
+          type: string
+          format: "date-time"
+          example: "2026-10-19T11:00:00Z"
+        observacoes:
+          type: string
+          example: "Limpeza do sensor ultrassónico e recalibração."
+        novo_estado:
+          type: string
+          enum:
+            - FUNCIONAL
+            - AVARIADO
+          default: FUNCIONAL
+    Calibracao:
+      allOf:
+        - type: object
+          required:
+            - id
+            - sensor_id
+            - tecnico_id
+          properties:
+            id:
+              type: integer
+              example: 24
+            sensor_id:
+              type: string
+              example: "SNS-MIR-004A"
+            tecnico_id:
+              type: integer
+              example: 7
+        - "$ref": "#/components/schemas/CalibracaoInput"
+    OtimizacaoRequest:
+      type: object
+      required:
+        - ponto_partida
+        - contentores
+      properties:
+        ponto_partida:
+          type: array
+          minItems: 2
+          maxItems: 2
+          items:
+            type: number
+            format: float
+          example:
+            - 37.7412
+            - -25.6756
+        contentores:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            required:
+              - contentor_id
+              - localizacao
+              - nivel_atual
+            properties:
+              contentor_id:
+                type: string
+                example: "CNT-MIR-004"
+              localizacao:
+                type: array
+                items:
+                  type: number
+                  format: float
+                example:
+                  - 37.8396
+                  - -25.7942
+              nivel_atual:
+                type: number
+                format: float
+                example: 96.2
+    OtimizacaoResponse:
+      type: object
+      required:
+        - distancia_total_km
+        - duracao_total_min
+        - sequencia_paragens
+      properties:
+        distancia_total_km:
+          type: number
+          format: float
+          example: 24.6
+        duracao_total_min:
+          type: integer
+          example: 48
+        sequencia_paragens:
+          type: array
+          items:
+            type: object
+            required:
+              - contentor_id
+              - ordem
+            properties:
+              contentor_id:
+                type: string
+                example: "CNT-MIR-004"
+              ordem:
+                type: integer
+                example: 1
+paths:
+  "/system/leituras":
+    post:
+      tags:
+        - "System - Leituras"
+      summary: "Persistir leitura recebida pelo Worker de ingestão"
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LeituraInput"
+      responses:
+        "201":
+          description: "Leitura persistida."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Leitura"
+        "400":
+          "$ref": "#/components/responses/BadRequest"
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+    get:
+      tags:
+        - "System - Leituras"
+      summary: "Consultar histórico paginado de leituras por sensor ou contentor"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: sensor_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: contentor_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - name: data_inicio
+          in: query
+          required: false
+          schema:
+            type: string
+            format: "date-time"
+        - name: data_fim
+          in: query
+          required: false
+          schema:
+            type: string
+            format: "date-time"
+        - "$ref": "#/components/parameters/PageParam"
+        - "$ref": "#/components/parameters/LimitParam"
+      responses:
+        "200":
+          description: "Lista paginada de leituras."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total:
+                    type: integer
+                    example: 250
+                  page:
+                    type: integer
+                    example: 1
+                  items:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Leitura"
+  "/system/utilizadores":
+    get:
+      tags:
+        - "System - Utilizadores"
+      summary: "Listar utilizadores da base de dados"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: role
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ADMIN
+              - SUPERVISOR
+              - OPERADOR
+              - TECNICO
+        - name: email
+          in: query
+          required: false
+          schema:
+            type: string
+            format: email
+        - "$ref": "#/components/parameters/PageParam"
+        - "$ref": "#/components/parameters/LimitParam"
+      responses:
+        "200":
+          description: "Lista de utilizadores."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Utilizador"
+    post:
+      tags:
+        - "System - Utilizadores"
+      summary: "Inserir novo utilizador na base de dados"
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UtilizadorCreateRequest"
+      responses:
+        "201":
+          description: "Utilizador criado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Utilizador"
+        "400":
+          "$ref": "#/components/responses/BadRequest"
+  "/system/utilizadores/{utilizadorId}":
+    get:
+      tags:
+        - "System - Utilizadores"
+      summary: "Obter utilizador por ID"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: utilizadorId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Dados do utilizador."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Utilizador"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+    patch:
+      tags:
+        - "System - Utilizadores"
+      summary: "Atualizar campos de um utilizador"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: utilizadorId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UtilizadorUpdateRequest"
+      responses:
+        "200":
+          description: "Utilizador atualizado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Utilizador"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+  "/system/sensores":
+    get:
+      tags:
+        - "System - Sensores"
+      summary: "Listar sensores IoT"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - FUNCIONAL
+              - AVARIADO
+        - name: contentor_id
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Lista de sensores."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Sensor"
+    post:
+      tags:
+        - "System - Sensores"
+      summary: "Registar novo sensor IoT"
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SensorCreateRequest"
+      responses:
+        "201":
+          description: "Sensor criado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Sensor"
+        "400":
+          "$ref": "#/components/responses/BadRequest"
+  "/system/sensores/{sensorId}":
+    get:
+      tags:
+        - "System - Sensores"
+      summary: "Obter detalhe de um sensor IoT (resolução de contentor_id)"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: sensorId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "SNS-MIR-004A"
+      responses:
+        "200":
+          description: "Dados do sensor."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Sensor"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+    patch:
+      tags:
+        - "System - Sensores"
+      summary: "Atualizar estado operacional ou ultima_comunicacao do sensor"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: sensorId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "SNS-MIR-004A"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SensorPatchRequest"
+      responses:
+        "200":
+          description: "Sensor atualizado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Sensor"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+  "/system/sensores/{sensorId}/calibracoes":
+    get:
+      tags:
+        - "System - Sensores"
+      summary: "Listar calibrações de um sensor"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: sensorId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Lista de calibrações."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Calibracao"
+    post:
+      tags:
+        - "System - Sensores"
+      summary: "Persistir registo de calibração"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: sensorId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - "$ref": "#/components/schemas/CalibracaoInput"
+                - type: object
+                  required:
+                    - tecnico_id
+                  properties:
+                    tecnico_id:
+                      type: integer
+                      example: 7
+      responses:
+        "201":
+          description: "Calibração criada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Calibracao"
+  "/system/contentores":
+    get:
+      tags:
+        - "System - Contentores"
+      summary: "Listar contentores registados"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: nivel_minimo
+          in: query
+          required: false
+          schema:
+            type: number
+            format: float
+        - name: zona
+          in: query
+          required: false
+          schema:
+            type: string
+        - "$ref": "#/components/parameters/PageParam"
+        - "$ref": "#/components/parameters/LimitParam"
+      responses:
+        "200":
+          description: "Lista de contentores."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Contentor"
+    post:
+      tags:
+        - "System - Contentores"
+      summary: "Criar novo contentor"
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ContentorCreateRequest"
+      responses:
+        "201":
+          description: "Contentor criado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Contentor"
+        "400":
+          "$ref": "#/components/responses/BadRequest"
+  "/system/contentores/{contentorId}":
+    get:
+      tags:
+        - "System - Contentores"
+      summary: "Obter detalhe de um contentor (nível atual e limiares 80% / 95%)"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: contentorId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "CNT-MIR-004"
+      responses:
+        "200":
+          description: "Dados do contentor."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Contentor"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+    patch:
+      tags:
+        - "System - Contentores"
+      summary: "Atualizar nivel_atual, ultima_recolha ou limiares de um contentor"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: contentorId
+          in: path
+          required: true
+          schema:
+            type: string
+            example: "CNT-MIR-004"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ContentorPatchRequest"
+      responses:
+        "200":
+          description: "Contentor atualizado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Contentor"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+    delete:
+      tags:
+        - "System - Contentores"
+      summary: "Remover contentor do sistema"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: contentorId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: "Contentor removido com sucesso."
+        "404":
+          "$ref": "#/components/responses/NotFound"
+  "/system/alertas":
+    get:
+      tags:
+        - "System - Alertas"
+      summary: "Listar alertas persistidos"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ATIVO
+              - RECONHECIDO
+              - RESOLVIDO
+        - name: tipo
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - AVISO_ENCHIMENTO
+              - ENCHIMENTO_CRITICO
+              - SENSOR_AVARIADO
+        - name: contentor_id
+          in: query
+          required: false
+          schema:
+            type: string
+        - "$ref": "#/components/parameters/PageParam"
+        - "$ref": "#/components/parameters/LimitParam"
+      responses:
+        "200":
+          description: "Lista de alertas."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Alerta"
+    post:
+      tags:
+        - "System - Alertas"
+      summary: "Criar novo alerta na base de dados"
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AlertaInput"
+      responses:
+        "201":
+          description: "Alerta criado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+  "/system/alertas/{alertaId}":
+    patch:
+      tags:
+        - "System - Alertas"
+      summary: "Atualizar estado do alerta (RECONHECIDO ou RESOLVIDO)"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: alertaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - estado
+              properties:
+                estado:
+                  type: string
+                  enum:
+                    - RECONHECIDO
+                    - RESOLVIDO
+                utilizador_id:
+                  type: integer
+                  example: 12
+      responses:
+        "200":
+          description: "Alerta atualizado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+  "/system/rotas":
+    get:
+      tags:
+        - "System - Rotas e Paragens"
+      summary: "Listar rotas e paragens"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - GERADA
+              - APROVADA
+              - EM_CURSO
+              - CONCLUIDA
+        - name: operador_id
+          in: query
+          required: false
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Lista de rotas."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Rota"
+    post:
+      tags:
+        - "System - Rotas e Paragens"
+      summary: "Persistir nova rota gerada com paragens"
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RotaCreateRequest"
+      responses:
+        "201":
+          description: "Rota criada no estado GERADA."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+  "/system/rotas/{rotaId}":
+    get:
+      tags:
+        - "System - Rotas e Paragens"
+      summary: "Obter rota por ID"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Detalhe da rota."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+        "404":
+          "$ref": "#/components/responses/NotFound"
+    patch:
+      tags:
+        - "System - Rotas e Paragens"
+      summary: "Atualizar estado, atribuição ou horários da rota"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                estado:
+                  type: string
+                  enum:
+                    - GERADA
+                    - APROVADA
+                    - EM_CURSO
+                    - CONCLUIDA
+                supervisor_id:
+                  type: integer
+                  nullable: true
+                operador_id:
+                  type: integer
+                  nullable: true
+                hora_inicio:
+                  type: string
+                  format: "date-time"
+                  nullable: true
+                hora_fim:
+                  type: string
+                  format: "date-time"
+                  nullable: true
+      responses:
+        "200":
+          description: "Rota atualizada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+  "/system/rotas/{rotaId}/paragens":
+    put:
+      tags:
+        - "System - Rotas e Paragens"
+      summary: "Substituir ou reordenar paragens de uma rota"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RotaAjusteRequest"
+      responses:
+        "200":
+          description: "Paragens atualizadas."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+  "/system/rotas/{rotaId}/paragens/{paragemId}/recolhas":
+    post:
+      tags:
+        - "System - Rotas e Paragens"
+      summary: "Registar recolha efetuada numa paragem"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: paragemId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - "$ref": "#/components/schemas/RecolhaInput"
+                - type: object
+                  required:
+                    - operador_id
+                  properties:
+                    operador_id:
+                      type: integer
+                      example: 12
+      responses:
+        "201":
+          description: "Recolha registada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Recolha"
+  "/system/otimizacao/calcular":
+    post:
+      tags:
+        - "System - Otimização (ORS)"
+      summary: "Calcular sequência otimizada via OpenRouteService /optimization (VROOM)"
+      description: "Adaptador interno que traduz contentores e coordenadas geográficas para a API VROOM do OpenRouteService."
+      security:
+        - apiKeyAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/OtimizacaoRequest"
+      responses:
+        "200":
+          description: "Sequência de paragens otimizada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/OtimizacaoResponse"
+  "/process/auth/login":
+    post:
+      tags:
+        - "Process - Contas e Acessos"
+      summary: "Validar credenciais e gerar token JWT"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: "Token JWT emitido."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AuthResponse"
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+  "/process/utilizadores":
+    get:
+      tags:
+        - "Process - Contas e Acessos"
+      summary: "Listar utilizadores (orquestração Contas e acessos)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: role
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ADMIN
+              - SUPERVISOR
+              - OPERADOR
+              - TECNICO
+        - "$ref": "#/components/parameters/PageParam"
+        - "$ref": "#/components/parameters/LimitParam"
+      responses:
+        "200":
+          description: "Lista de utilizadores."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Utilizador"
+    post:
+      tags:
+        - "Process - Contas e Acessos"
+      summary: "Criar conta de utilizador com validação de regras de perfil"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UtilizadorCreateRequest"
+      responses:
+        "201":
+          description: "Conta criada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Utilizador"
+        "400":
+          "$ref": "#/components/responses/BadRequest"
+  "/process/utilizadores/{utilizadorId}":
+    patch:
+      tags:
+        - "Process - Contas e Acessos"
+      summary: "Atualizar perfil ou estado ativo de conta"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: utilizadorId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UtilizadorUpdateRequest"
+      responses:
+        "200":
+          description: "Utilizador atualizado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Utilizador"
+  "/process/contentores":
+    post:
+      tags:
+        - "Process - Inventário"
+      summary: "Registar novo contentor no inventário (limiares padrão 80% / 95%)"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ContentorCreateRequest"
+      responses:
+        "201":
+          description: "Contentor criado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Contentor"
+  "/process/contentores/{contentorId}":
+    patch:
+      tags:
+        - "Process - Inventário"
+      summary: "Atualizar configuração de contentor"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: contentorId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ContentorPatchRequest"
+      responses:
+        "200":
+          description: "Contentor atualizado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Contentor"
+    delete:
+      tags:
+        - "Process - Inventário"
+      summary: "Remover contentor do inventário"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: contentorId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: "Contentor removido."
+  "/process/sensores":
+    get:
+      tags:
+        - "Process - Inventário"
+      summary: "Consultar sensores do inventário"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - FUNCIONAL
+              - AVARIADO
+      responses:
+        "200":
+          description: "Lista de sensores."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Sensor"
+    post:
+      tags:
+        - "Process - Inventário"
+      summary: "Associar sensor IoT a contentor"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SensorCreateRequest"
+      responses:
+        "201":
+          description: "Sensor associado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Sensor"
+  "/process/sensores/{sensorId}":
+    patch:
+      tags:
+        - "Process - Inventário"
+      summary: "Atualizar estado do sensor (FUNCIONAL / AVARIADO)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: sensorId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SensorPatchRequest"
+      responses:
+        "200":
+          description: "Sensor atualizado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Sensor"
+  "/process/sensores/{sensorId}/calibracoes":
+    post:
+      tags:
+        - "Process - Inventário"
+      summary: "Registar calibração e resolver alertas de avaria associados"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: sensorId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CalibracaoInput"
+      responses:
+        "201":
+          description: "Calibração registada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Calibracao"
+  "/process/monitorizacao/estado-atual":
+    get:
+      tags:
+        - "Process - Monitorização"
+      summary: "Obter estado consolidado de contentores e sensores (limiares 80% / 95%)"
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      responses:
+        "200":
+          description: "Estado atual da rede de contentores."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  total_contentores:
+                    type: integer
+                    example: 45
+                  em_aviso_80:
+                    type: integer
+                    example: 6
+                  em_critico_95:
+                    type: integer
+                    example: 2
+                  contentores:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Contentor"
+  "/process/monitorizacao/historico":
+    get:
+      tags:
+        - "Process - Monitorização"
+      summary: "Consultar séries temporais e indicadores agregados por zona"
+      security:
+        - bearerAuth: []
+        - apiKeyAuth: []
+      parameters:
+        - name: data_inicio
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: data_fim
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+        - name: zona
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Indicadores históricos agregados."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  periodo:
+                    type: string
+                    example: "2026-10-01 a 2026-10-31"
+                  total_recolhas:
+                    type: integer
+                    example: 312
+                  zonas_criticas:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        zona:
+                          type: string
+                          example: "Miradouro da Vista do Rei"
+                        media_enchimento:
+                          type: number
+                          format: float
+                          example: 81.4
+                        ocorrencias_alerta:
+                          type: integer
+                          example: 19
+  "/process/alertas":
+    get:
+      tags:
+        - "Process - Alertas"
+      summary: "Listar alertas filtrados"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ATIVO
+              - RECONHECIDO
+              - RESOLVIDO
+        - name: tipo
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - AVISO_ENCHIMENTO
+              - ENCHIMENTO_CRITICO
+              - SENSOR_AVARIADO
+      responses:
+        "200":
+          description: "Lista de alertas."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Alerta"
+    post:
+      tags:
+        - "Process - Alertas"
+      summary: "Criar alerta e publicar evento alerta.criado no RabbitMQ"
+      security:
+        - apiKeyAuth: []
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/AlertaInput"
+      responses:
+        "201":
+          description: "Alerta criado e evento publicado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+  "/process/alertas/{alertaId}/reconhecer":
+    patch:
+      tags:
+        - "Process - Alertas"
+      summary: "Reconhecer alerta ativo"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: alertaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Alerta reconhecido."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+  "/process/alertas/{alertaId}/resolver":
+    patch:
+      tags:
+        - "Process - Alertas"
+      summary: "Resolver alerta"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: alertaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Alerta resolvido."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+  "/process/rotas/gerar":
+    post:
+      tags:
+        - "Process - Rotas"
+      summary: "Gerar rota otimizada (via adaptador VROOM) e publicar evento rota.gerada"
+      security:
+        - apiKeyAuth: []
+        - bearerAuth: []
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data_planeada:
+                  type: string
+                  format: date
+                  example: "2026-10-20"
+                apenas_criticos_95:
+                  type: boolean
+                  default: false
+      responses:
+        "201":
+          description: "Rota gerada e evento publicado no RabbitMQ."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+        "422":
+          "$ref": "#/components/responses/UnprocessableEntity"
+  "/process/rotas":
+    get:
+      tags:
+        - "Process - Rotas"
+      summary: "Listar rotas"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - GERADA
+              - APROVADA
+              - EM_CURSO
+              - CONCLUIDA
+      responses:
+        "200":
+          description: "Lista de rotas."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Rota"
+  "/process/rotas/{rotaId}/aprovar":
+    patch:
+      tags:
+        - "Process - Rotas"
+      summary: "Aprovar rota e atribuir operador"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                operador_id:
+                  type: integer
+                  example: 12
+      responses:
+        "200":
+          description: "Rota aprovada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+  "/process/rotas/{rotaId}/ajustar":
+    put:
+      tags:
+        - "Process - Rotas"
+      summary: "Ajustar paragens ou operador de uma rota"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RotaAjusteRequest"
+      responses:
+        "200":
+          description: "Rota ajustada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+  "/process/rotas/{rotaId}/iniciar":
+    patch:
+      tags:
+        - "Process - Rotas"
+      summary: "Iniciar execução de rota aprovada"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Rota em curso."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+        "422":
+          "$ref": "#/components/responses/UnprocessableEntity"
+  "/process/rotas/{rotaId}/paragens/{paragemId}/recolha":
+    post:
+      tags:
+        - "Process - Rotas"
+      summary: "Orquestrar registo de recolha, reposição de nível e resolução de alertas"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: paragemId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RecolhaInput"
+      responses:
+        "201":
+          description: "Recolha concluída."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Recolha"
+  "/exp/auth/login":
+    post:
+      tags:
+        - "Experience - Autenticação"
+      summary: "Autenticar utilizador na Web App (React)"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/LoginRequest"
+      responses:
+        "200":
+          description: "Login bem-sucedido."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/AuthResponse"
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+  "/exp/admin/utilizadores":
+    get:
+      tags:
+        - "Experience - Admin API"
+      summary: "Listar contas de utilizadores"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: role
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ADMIN
+              - SUPERVISOR
+              - OPERADOR
+              - TECNICO
+        - "$ref": "#/components/parameters/PageParam"
+        - "$ref": "#/components/parameters/LimitParam"
+      responses:
+        "200":
+          description: "Lista de utilizadores."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Utilizador"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+    post:
+      tags:
+        - "Experience - Admin API"
+      summary: "Criar nova conta de utilizador"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UtilizadorCreateRequest"
+      responses:
+        "201":
+          description: "Conta criada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Utilizador"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+  "/exp/admin/utilizadores/{utilizadorId}":
+    patch:
+      tags:
+        - "Experience - Admin API"
+      summary: "Atualizar perfil, empresa ou estado ativo"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: utilizadorId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/UtilizadorUpdateRequest"
+      responses:
+        "200":
+          description: "Conta atualizada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Utilizador"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+  "/exp/admin/contentores":
+    post:
+      tags:
+        - "Experience - Admin API"
+      summary: "Registar novo contentor no mapa"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ContentorCreateRequest"
+      responses:
+        "201":
+          description: "Contentor registado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Contentor"
+        "403":
+          "$ref": "#/components/responses/Forbidden"
+  "/exp/admin/contentores/{contentorId}":
+    patch:
+      tags:
+        - "Experience - Admin API"
+      summary: "Editar dados ou limiares de contentor"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: contentorId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/ContentorPatchRequest"
+      responses:
+        "200":
+          description: "Contentor atualizado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Contentor"
+    delete:
+      tags:
+        - "Experience - Admin API"
+      summary: "Remover contentor"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: contentorId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "204":
+          description: "Contentor removido."
+  "/exp/admin/sensores":
+    post:
+      tags:
+        - "Experience - Admin API"
+      summary: "Associar sensor IoT a contentor"
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SensorCreateRequest"
+      responses:
+        "201":
+          description: "Sensor criado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Sensor"
+  "/exp/admin/monitorizacao":
+    get:
+      tags:
+        - "Experience - Admin API"
+      summary: "Visão global de monitorização da rede"
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: "Resumo global dos contentores e níveis."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Contentor"
+  "/exp/tecnico/sensores":
+    get:
+      tags:
+        - "Experience - Técnico API"
+      summary: "Consultar sensores e estado de comunicação"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - FUNCIONAL
+              - AVARIADO
+      responses:
+        "200":
+          description: "Lista de sensores."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Sensor"
+  "/exp/tecnico/sensores/{sensorId}/estado":
+    patch:
+      tags:
+        - "Experience - Técnico API"
+      summary: "Atualizar estado operacional de um sensor"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: sensorId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/SensorPatchRequest"
+      responses:
+        "200":
+          description: "Estado atualizado."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Sensor"
+  "/exp/tecnico/sensores/{sensorId}/calibracoes":
+    post:
+      tags:
+        - "Experience - Técnico API"
+      summary: "Registar intervenção de calibração num sensor"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: sensorId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/CalibracaoInput"
+      responses:
+        "201":
+          description: "Calibração registada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Calibracao"
+  "/exp/tecnico/alertas":
+    get:
+      tags:
+        - "Experience - Técnico API"
+      summary: "Consultar alertas técnicos de sensores"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ATIVO
+              - RECONHECIDO
+              - RESOLVIDO
+      responses:
+        "200":
+          description: "Lista de alertas."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Alerta"
+  "/exp/tecnico/alertas/{alertaId}/reconhecer":
+    patch:
+      tags:
+        - "Experience - Técnico API"
+      summary: "Reconhecer alerta técnico"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: alertaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Alerta reconhecido."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+  "/exp/tecnico/alertas/{alertaId}/resolver":
+    patch:
+      tags:
+        - "Experience - Técnico API"
+      summary: "Marcar alerta técnico como resolvido"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: alertaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Alerta resolvido."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+  "/exp/operador/mapa":
+    get:
+      tags:
+        - "Experience - Operador API"
+      summary: "Obter contentores e rota atribuída para o mapa Leaflet (OpenStreetMap)"
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: "Dados consolidados do mapa operacional."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  contentores:
+                    type: array
+                    items:
+                      "$ref": "#/components/schemas/Contentor"
+                  rota_ativa:
+                    "$ref": "#/components/schemas/Rota"
+  "/exp/operador/rotas/{rotaId}/iniciar":
+    patch:
+      tags:
+        - "Experience - Operador API"
+      summary: "Iniciar rota aprovada (APROVADA -> EM_CURSO)"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Rota iniciada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+        "422":
+          "$ref": "#/components/responses/UnprocessableEntity"
+  "/exp/operador/rotas/{rotaId}/paragens/{paragemId}/recolha":
+    post:
+      tags:
+        - "Experience - Operador API"
+      summary: "Registar recolha efetuada numa paragem da rota"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: paragemId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RecolhaInput"
+      responses:
+        "201":
+          description: "Recolha registada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Recolha"
+  "/exp/operador/alertas":
+    get:
+      tags:
+        - "Experience - Operador API"
+      summary: "Consultar alertas operacionais de enchimento"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ATIVO
+              - RECONHECIDO
+              - RESOLVIDO
+      responses:
+        "200":
+          description: "Lista de alertas."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Alerta"
+  "/exp/operador/alertas/{alertaId}/reconhecer":
+    patch:
+      tags:
+        - "Experience - Operador API"
+      summary: "Reconhecer alerta operacional"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: alertaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Alerta reconhecido."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+  "/exp/operador/alertas/{alertaId}/resolver":
+    patch:
+      tags:
+        - "Experience - Operador API"
+      summary: "Marcar alerta operacional como resolvido"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: alertaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Alerta resolvido."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+  "/exp/supervisor/rotas":
+    get:
+      tags:
+        - "Experience - Supervisor API"
+      summary: "Listar rotas para revisão, aprovação e acompanhamento"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - GERADA
+              - APROVADA
+              - EM_CURSO
+              - CONCLUIDA
+      responses:
+        "200":
+          description: "Lista de rotas."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Rota"
+  "/exp/supervisor/rotas/gerar":
+    post:
+      tags:
+        - "Experience - Supervisor API"
+      summary: "Disparar geração manual de rota otimizada"
+      security:
+        - bearerAuth: []
+      responses:
+        "201":
+          description: "Rota gerada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+  "/exp/supervisor/rotas/{rotaId}/aprovar":
+    patch:
+      tags:
+        - "Experience - Supervisor API"
+      summary: "Aprovar rota e atribuir operador"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                operador_id:
+                  type: integer
+                  example: 12
+      responses:
+        "200":
+          description: "Rota aprovada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+  "/exp/supervisor/rotas/{rotaId}/ajustar":
+    put:
+      tags:
+        - "Experience - Supervisor API"
+      summary: "Reordenar paragens ou alterar operador antes da aprovação"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: rotaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              "$ref": "#/components/schemas/RotaAjusteRequest"
+      responses:
+        "200":
+          description: "Rota ajustada."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Rota"
+  "/exp/supervisor/relatorios":
+    get:
+      tags:
+        - "Experience - Supervisor API"
+      summary: "Consultar relatórios analíticos de deposição e eficiência de recolha"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: data_inicio
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2026-10-01"
+        - name: data_fim
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2026-10-31"
+      responses:
+        "200":
+          description: "Relatório agregado por zona e período."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  periodo:
+                    type: string
+                  total_recolhas:
+                    type: integer
+                  zonas_criticas:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        zona:
+                          type: string
+                        media_enchimento:
+                          type: number
+                          format: float
+                        ocorrencias_alerta:
+                          type: integer
+  "/exp/supervisor/alertas":
+    get:
+      tags:
+        - "Experience - Supervisor API"
+      summary: "Supervisionar alertas do sistema"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: estado
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - ATIVO
+              - RECONHECIDO
+              - RESOLVIDO
+      responses:
+        "200":
+          description: "Lista de alertas."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Alerta"
+  "/exp/supervisor/alertas/{alertaId}/reconhecer":
+    patch:
+      tags:
+        - "Experience - Supervisor API"
+      summary: "Reconhecer alerta enquanto Supervisor"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: alertaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Alerta reconhecido."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+  "/exp/supervisor/alertas/{alertaId}/resolver":
+    patch:
+      tags:
+        - "Experience - Supervisor API"
+      summary: "Marcar alerta como resolvido enquanto Supervisor"
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: alertaId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: "Alerta resolvido."
+          content:
+            application/json:
+              schema:
+                "$ref": "#/components/schemas/Alerta"
+  "/exp/parceiro/contentores":
+    get:
+      tags:
+        - "Experience - Parceiro API"
+      summary: "Consultar estado dos contentores (Portal da Câmara Municipal)"
+      description: "Endpoint institucional de leitura disponibilizado ao Portal da Câmara Municipal."
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: zona
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        "200":
+          description: "Lista de contentores monitorizados."
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  "$ref": "#/components/schemas/Contentor"
+        "401":
+          "$ref": "#/components/responses/Unauthorized"
+  "/exp/parceiro/indicadores":
+    get:
+      tags:
+        - "Experience - Parceiro API"
+      summary: "Consultar indicadores municipais de recolha e ocupação por zona"
+      security:
+        - apiKeyAuth: []
+      parameters:
+        - name: data_inicio
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2026-10-01"
+        - name: data_fim
+          in: query
+          required: true
+          schema:
+            type: string
+            format: date
+            example: "2026-10-31"
+      responses:
+        "200":
+          description: "Indicadores agregados para o Portal da Câmara."
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  periodo:
+                    type: string
+                    example: "2026-10-01 a 2026-10-31"
+                  total_recolhas:
+                    type: integer
+                    example: 312
+                  taxa_ocupacao_media:
+                    type: number
+                    format: float
+                    example: 64.2
+        "401":
+          "$ref": "#/components/responses/Unauthorized"

@@ -1,0 +1,507 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1918" height="4513" viewBox="-140 -22 1917.5 4513.0">
+<rect x="-140" y="-22" width="1917.5" height="4513.0" fill="#ffffff"/>
+<defs><marker id="tri" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="24" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="785.0" y="62.8" xml:space="preserve">UC03 – Gerir contentores: criar contentor</tspan>
+</text>
+<rect x="48" y="90" width="184" height="56" rx="6.72" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="140.0" y="113.8" xml:space="preserve">Administrador</tspan>
+<tspan x="140.0" y="131.3" xml:space="preserve">(Web App)</tspan>
+</text>
+<polyline points="140,146 140,1295.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="263" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="122.55" xml:space="preserve">Web Experience API</tspan>
+</text>
+<polyline points="355,146 355,1295.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="478" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="113.8" xml:space="preserve">Inventário</tspan>
+<tspan x="570.0" y="131.3" xml:space="preserve">(Process API)</tspan>
+</text>
+<polyline points="570,146 570,1295.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="693" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="785.0" y="113.8" xml:space="preserve">System API</tspan>
+<tspan x="785.0" y="131.3" xml:space="preserve">contentores</tspan>
+</text>
+<polyline points="785,146 785,1295.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="908" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="113.8" xml:space="preserve">PostgreSQL</tspan>
+<tspan x="1000.0" y="131.3" xml:space="preserve">schema core</tspan>
+</text>
+<polyline points="1000,146 1000,1295.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1123" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1215.0" y="122.55" xml:space="preserve">Mosquitto</tspan>
+</text>
+<polyline points="1215,146 1215,1295.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1338" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1430.0" y="122.55" xml:space="preserve">Monitorização &amp; Alertas</tspan>
+</text>
+<polyline points="1430,146 1430,1295.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="203.3" xml:space="preserve">POST</tspan>
+<tspan x="247.5" y="220.8" xml:space="preserve">/api/v1/exp/contentores</tspan>
+<tspan x="247.5" y="238.3" xml:space="preserve">{id, zona, localizacao,</tspan>
+<tspan x="247.5" y="255.8" xml:space="preserve">capacidade_l, limiar_aviso,</tspan>
+<tspan x="247.5" y="273.3" xml:space="preserve">limiar_critico}</tspan>
+</text>
+<polyline points="140,281.5 355,281.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<polyline points="355,299.5 385,299.5 385,321.5 355,321.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="393" y="312.8" xml:space="preserve">validar JWT + RBAC (só ADMIN)</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="358.8" xml:space="preserve">POST</tspan>
+<tspan x="462.5" y="376.3" xml:space="preserve">/api/v1/process/contentores</tspan>
+</text>
+<polyline points="355,384.5 570,384.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<polyline points="570,402.5 600,402.5 600,424.5 570,424.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="608" y="415.8" xml:space="preserve">validar regras: campos obrigatórios,</tspan>
+<tspan x="608" y="433.3" xml:space="preserve">0 &lt; limiar_aviso &lt; limiar_critico ≤</tspan>
+<tspan x="608" y="450.8" xml:space="preserve">100</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="510.3" xml:space="preserve">400 ErrorResponse (campos)</tspan>
+</text>
+<polyline points="570,518.5 355,518.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="549.8" xml:space="preserve">400 indica os campos</tspan>
+<tspan x="247.5" y="567.3" xml:space="preserve">inválidos</tspan>
+</text>
+<polyline points="355,575.5 140,575.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="636.8" xml:space="preserve">POST</tspan>
+<tspan x="677.5" y="654.3" xml:space="preserve">/api/v1/system/contentores</tspan>
+</text>
+<polyline points="570,662.5 785,662.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="693.8" xml:space="preserve">INSERT contentores</tspan>
+</text>
+<polyline points="785,702.0 1000,702.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="759.3" xml:space="preserve">violação de chave única</tspan>
+</text>
+<polyline points="1000,767.5 785,767.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="798.8" xml:space="preserve">409 contentor já existe</tspan>
+</text>
+<polyline points="785,807.0 570,807.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="838.3" xml:space="preserve">409</tspan>
+</text>
+<polyline points="570,846.5 355,846.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="877.8" xml:space="preserve">409 identificador já usado</tspan>
+</text>
+<polyline points="355,886.0 140,886.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="947.3" xml:space="preserve">ok</tspan>
+</text>
+<polyline points="1000,955.5 785,955.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="986.8" xml:space="preserve">201 contentor</tspan>
+</text>
+<polyline points="785,995.0 570,995.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="1026.3" xml:space="preserve">PUBLISH eventos/contentor/atualizado {op: CRIADO, contentor} (QoS 1)</tspan>
+</text>
+<polyline points="570,1034.5 1215,1034.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="1065.8" xml:space="preserve">201 contentor</tspan>
+</text>
+<polyline points="570,1074.0 355,1074.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="1105.3" xml:space="preserve">201 contentor criado</tspan>
+</text>
+<polyline points="355,1113.5 140,1113.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1322.5" y="1144.8" xml:space="preserve">PUBLISH eventos/</tspan>
+<tspan x="1322.5" y="1162.3" xml:space="preserve">contentor/atualizado</tspan>
+<tspan x="1322.5" y="1179.8" xml:space="preserve">($share/monitorizacao)</tspan>
+</text>
+<polyline points="1215,1188.0 1430,1188.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="1430,1206.0 1460,1206.0 1460,1228.0 1430,1228.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="1468" y="1219.3" xml:space="preserve">insere na cópia de contentores</tspan>
+<tspan x="1468" y="1236.8" xml:space="preserve">(limiares)</tspan>
+</text>
+<rect x="55" y="720.0" width="1460" height="539.0" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="55" y="720.0" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="77.0" y="734.35" xml:space="preserve">alt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="107" y="735.35" xml:space="preserve">[id já existe]</tspan>
+</text>
+<polyline points="55,908.0 1515,908.0" fill="none" stroke="#1971c2" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="63" y="923.35" xml:space="preserve">[inserido]</tspan>
+</text>
+<rect x="45" y="471.0" width="1480" height="802.0" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="45" y="471.0" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="67.0" y="485.35" xml:space="preserve">alt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="97" y="486.35" xml:space="preserve">[dados inválidos]</tspan>
+</text>
+<polyline points="45,597.5 1525,597.5" fill="none" stroke="#1971c2" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="53" y="612.85" xml:space="preserve">[dados válidos]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="24" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="785.0" y="1427.8" xml:space="preserve">UC03 – Gerir contentores: editar contentor</tspan>
+</text>
+<rect x="48" y="1455.0" width="184" height="56" rx="6.72" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="140.0" y="1478.8" xml:space="preserve">Administrador</tspan>
+<tspan x="140.0" y="1496.3" xml:space="preserve">(Web App)</tspan>
+</text>
+<polyline points="140,1511.0 140,2766.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="263" y="1455.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="1487.55" xml:space="preserve">Web Experience API</tspan>
+</text>
+<polyline points="355,1511.0 355,2766.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="478" y="1455.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="1478.8" xml:space="preserve">Inventário</tspan>
+<tspan x="570.0" y="1496.3" xml:space="preserve">(Process API)</tspan>
+</text>
+<polyline points="570,1511.0 570,2766.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="693" y="1455.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="785.0" y="1478.8" xml:space="preserve">System API</tspan>
+<tspan x="785.0" y="1496.3" xml:space="preserve">contentores</tspan>
+</text>
+<polyline points="785,1511.0 785,2766.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="908" y="1455.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="1478.8" xml:space="preserve">PostgreSQL</tspan>
+<tspan x="1000.0" y="1496.3" xml:space="preserve">schema core</tspan>
+</text>
+<polyline points="1000,1511.0 1000,2766.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1123" y="1455.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1215.0" y="1487.55" xml:space="preserve">Mosquitto</tspan>
+</text>
+<polyline points="1215,1511.0 1215,2766.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1338" y="1455.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1430.0" y="1487.55" xml:space="preserve">Monitorização &amp; Alertas</tspan>
+</text>
+<polyline points="1430,1511.0 1430,2766.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="1568.3" xml:space="preserve">PATCH /api/v1/exp/contentor</tspan>
+<tspan x="247.5" y="1585.8" xml:space="preserve">es/{id} {campos alterados}</tspan>
+</text>
+<polyline points="140,1594.0 355,1594.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<polyline points="355,1612.0 385,1612.0 385,1634.0 355,1634.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="393" y="1625.3" xml:space="preserve">validar JWT + RBAC (só ADMIN)</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="1671.3" xml:space="preserve">PATCH /api/v1/process/conte</tspan>
+<tspan x="462.5" y="1688.8" xml:space="preserve">ntores/{id}</tspan>
+</text>
+<polyline points="355,1697.0 570,1697.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="1728.3" xml:space="preserve">GET /api/v1/system/contento</tspan>
+<tspan x="677.5" y="1745.8" xml:space="preserve">res/{id}</tspan>
+</text>
+<polyline points="570,1754.0 785,1754.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="1785.3" xml:space="preserve">SELECT contentor</tspan>
+</text>
+<polyline points="785,1793.5 1000,1793.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="1824.8" xml:space="preserve">contentor | nenhum</tspan>
+</text>
+<polyline points="1000,1833.0 785,1833.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="1890.3" xml:space="preserve">404</tspan>
+</text>
+<polyline points="785,1898.5 570,1898.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="1929.8" xml:space="preserve">404</tspan>
+</text>
+<polyline points="570,1938.0 355,1938.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="1969.3" xml:space="preserve">404 contentor não</tspan>
+<tspan x="247.5" y="1986.8" xml:space="preserve">encontrado</tspan>
+</text>
+<polyline points="355,1995.0 140,1995.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="2056.3" xml:space="preserve">200 contentor</tspan>
+</text>
+<polyline points="785,2064.5 570,2064.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="570,2082.5 600,2082.5 600,2104.5 570,2104.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="608" y="2095.8" xml:space="preserve">validar regras (limiares)</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="2141.8" xml:space="preserve">400 ErrorResponse</tspan>
+</text>
+<polyline points="570,2150.0 355,2150.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="2181.3" xml:space="preserve">400 indica os campos</tspan>
+<tspan x="247.5" y="2198.8" xml:space="preserve">inválidos</tspan>
+</text>
+<polyline points="355,2207.0 140,2207.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="2268.3" xml:space="preserve">200 contentor</tspan>
+</text>
+<polyline points="785,2276.5 570,2276.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="570,2294.5 600,2294.5 600,2316.5 570,2316.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="608" y="2307.8" xml:space="preserve">validar regras (limiares)</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="2353.8" xml:space="preserve">PATCH /api/v1/system/conten</tspan>
+<tspan x="677.5" y="2371.3" xml:space="preserve">tores/{id}</tspan>
+</text>
+<polyline points="570,2379.5 785,2379.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="2410.8" xml:space="preserve">UPDATE contentores</tspan>
+</text>
+<polyline points="785,2419.0 1000,2419.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="2450.3" xml:space="preserve">ok</tspan>
+</text>
+<polyline points="1000,2458.5 785,2458.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="2489.8" xml:space="preserve">200 contentor</tspan>
+</text>
+<polyline points="785,2498.0 570,2498.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="2529.3" xml:space="preserve">PUBLISH eventos/contentor/atualizado {op: ALTERADO, contentor} (QoS 1)</tspan>
+</text>
+<polyline points="570,2537.5 1215,2537.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="2568.8" xml:space="preserve">200 contentor</tspan>
+</text>
+<polyline points="570,2577.0 355,2577.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="2608.3" xml:space="preserve">200 contentor editado</tspan>
+</text>
+<polyline points="355,2616.5 140,2616.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1322.5" y="2647.8" xml:space="preserve">PUBLISH eventos/</tspan>
+<tspan x="1322.5" y="2665.3" xml:space="preserve">contentor/atualizado</tspan>
+</text>
+<polyline points="1215,2673.5 1430,2673.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="1430,2691.5 1460,2691.5 1460,2713.5 1430,2713.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="1468" y="2704.8" xml:space="preserve">atualiza a cópia (novos limiares</tspan>
+<tspan x="1468" y="2722.3" xml:space="preserve">valem para as próximas leituras)</tspan>
+</text>
+<rect x="45" y="1851.0" width="1480" height="893.5" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="45" y="1851.0" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="67.0" y="1865.35" xml:space="preserve">alt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="97" y="1866.35" xml:space="preserve">[contentor inexistente]</tspan>
+</text>
+<polyline points="45,2017.0 1525,2017.0" fill="none" stroke="#1971c2" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="53" y="2032.35" xml:space="preserve">[existe, dados inválidos]</tspan>
+</text>
+<polyline points="45,2229.0 1525,2229.0" fill="none" stroke="#1971c2" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="53" y="2244.35" xml:space="preserve">[existe, dados válidos]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="24" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="785.0" y="2899.3" xml:space="preserve">UC03 – Gerir contentores: remover contentor</tspan>
+</text>
+<rect x="48" y="2926.5" width="184" height="56" rx="6.72" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="140.0" y="2950.3" xml:space="preserve">Administrador</tspan>
+<tspan x="140.0" y="2967.8" xml:space="preserve">(Web App)</tspan>
+</text>
+<polyline points="140,2982.5 140,4461.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="263" y="2926.5" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="2959.05" xml:space="preserve">Web Experience API</tspan>
+</text>
+<polyline points="355,2982.5 355,4461.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="478" y="2926.5" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="2950.3" xml:space="preserve">Inventário</tspan>
+<tspan x="570.0" y="2967.8" xml:space="preserve">(Process API)</tspan>
+</text>
+<polyline points="570,2982.5 570,4461.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="693" y="2926.5" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="785.0" y="2950.3" xml:space="preserve">System API</tspan>
+<tspan x="785.0" y="2967.8" xml:space="preserve">contentores</tspan>
+</text>
+<polyline points="785,2982.5 785,4461.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="908" y="2926.5" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="2950.3" xml:space="preserve">PostgreSQL</tspan>
+<tspan x="1000.0" y="2967.8" xml:space="preserve">schema core</tspan>
+</text>
+<polyline points="1000,2982.5 1000,4461.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1123" y="2926.5" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1215.0" y="2959.05" xml:space="preserve">Mosquitto</tspan>
+</text>
+<polyline points="1215,2982.5 1215,4461.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1338" y="2926.5" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1430.0" y="2959.05" xml:space="preserve">Monitorização &amp; Alertas</tspan>
+</text>
+<polyline points="1430,2982.5 1430,4461.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="3039.8" xml:space="preserve">GET /api/v1/exp/contentores</tspan>
+<tspan x="247.5" y="3057.3" xml:space="preserve">/{id}/dependencias</tspan>
+</text>
+<polyline points="140,3065.5 355,3065.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="3096.8" xml:space="preserve">GET /api/v1/process/content</tspan>
+<tspan x="462.5" y="3114.3" xml:space="preserve">ores/{id}/dependencias</tspan>
+</text>
+<polyline points="355,3122.5 570,3122.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="3153.8" xml:space="preserve">GET /api/v1/system/contento</tspan>
+<tspan x="677.5" y="3171.3" xml:space="preserve">res/{id}/dependencias</tspan>
+</text>
+<polyline points="570,3179.5 785,3179.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="3210.8" xml:space="preserve">SELECT sensor associado;</tspan>
+<tspan x="892.5" y="3228.3" xml:space="preserve">paragens em rotas GERADA /</tspan>
+<tspan x="892.5" y="3245.8" xml:space="preserve">APROVADA / EM_CURSO</tspan>
+</text>
+<polyline points="785,3254.0 1000,3254.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="3285.3" xml:space="preserve">sensor_id, rotas_ativas[]</tspan>
+</text>
+<polyline points="1000,3293.5 785,3293.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="3324.8" xml:space="preserve">200 {sensor_id,</tspan>
+<tspan x="677.5" y="3342.3" xml:space="preserve">rotas_ativas[]}</tspan>
+</text>
+<polyline points="785,3350.5 570,3350.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="3381.8" xml:space="preserve">200 dependências</tspan>
+</text>
+<polyline points="570,3390.0 355,3390.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="3421.3" xml:space="preserve">200 dependências</tspan>
+</text>
+<polyline points="355,3429.5 140,3429.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="140,3473.5 170,3473.5 170,3495.5 140,3495.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="178" y="3486.8" xml:space="preserve">remoção bloqueada; mostra as rotas</tspan>
+<tspan x="178" y="3504.3" xml:space="preserve">ativas</tspan>
+</text>
+<polyline points="140,3554.5 170,3554.5 170,3576.5 140,3576.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="178" y="3567.8" xml:space="preserve">aviso: o sensor associado (se</tspan>
+<tspan x="178" y="3585.3" xml:space="preserve">existir) fica sem contentor;</tspan>
+<tspan x="178" y="3602.8" xml:space="preserve">administrador confirma</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="3636.3" xml:space="preserve">DELETE /api/v1/exp/contento</tspan>
+<tspan x="247.5" y="3653.8" xml:space="preserve">res/{id}</tspan>
+</text>
+<polyline points="140,3662.0 355,3662.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="3693.3" xml:space="preserve">DELETE /api/v1/process/cont</tspan>
+<tspan x="462.5" y="3710.8" xml:space="preserve">entores/{id}</tspan>
+</text>
+<polyline points="355,3719.0 570,3719.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="3750.3" xml:space="preserve">DELETE /api/v1/system/conte</tspan>
+<tspan x="677.5" y="3767.8" xml:space="preserve">ntores/{id}</tspan>
+</text>
+<polyline points="570,3776.0 785,3776.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="3807.3" xml:space="preserve">BEGIN · revalida rotas</tspan>
+<tspan x="892.5" y="3824.8" xml:space="preserve">ativas · UPDATE sensores</tspan>
+<tspan x="892.5" y="3842.3" xml:space="preserve">SET contentor_id = NULL ·</tspan>
+<tspan x="892.5" y="3859.8" xml:space="preserve">DELETE contentores · COMMIT</tspan>
+</text>
+<polyline points="785,3868.0 1000,3868.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="3925.3" xml:space="preserve">rota ativa encontrada</tspan>
+<tspan x="892.5" y="3942.8" xml:space="preserve">(ROLLBACK)</tspan>
+</text>
+<polyline points="1000,3951.0 785,3951.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="3982.3" xml:space="preserve">409 contentor em rota ativa</tspan>
+</text>
+<polyline points="785,3990.5 570,3990.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="4021.8" xml:space="preserve">409</tspan>
+</text>
+<polyline points="570,4030.0 355,4030.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="4061.3" xml:space="preserve">409 não é possível remover</tspan>
+</text>
+<polyline points="355,4069.5 140,4069.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="4130.8" xml:space="preserve">ok</tspan>
+</text>
+<polyline points="1000,4139.0 785,4139.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="4170.3" xml:space="preserve">204</tspan>
+</text>
+<polyline points="785,4178.5 570,4178.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="4209.8" xml:space="preserve">PUBLISH eventos/contentor/atualizado {op: REMOVIDO, contentor_id} (QoS 1)</tspan>
+</text>
+<polyline points="570,4218.0 1215,4218.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="4249.3" xml:space="preserve">204</tspan>
+</text>
+<polyline points="570,4257.5 355,4257.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="4288.8" xml:space="preserve">204 contentor removido</tspan>
+</text>
+<polyline points="355,4297.0 140,4297.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1322.5" y="4328.3" xml:space="preserve">PUBLISH eventos/</tspan>
+<tspan x="1322.5" y="4345.8" xml:space="preserve">contentor/atualizado</tspan>
+</text>
+<polyline points="1215,4354.0 1430,4354.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="1430,4372.0 1460,4372.0 1460,4394.0 1430,4394.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="1468" y="4385.3" xml:space="preserve">remove da cópia; resolve alertas</tspan>
+<tspan x="1468" y="4402.8" xml:space="preserve">ativos desse contentor</tspan>
+</text>
+<rect x="55" y="3886.0" width="1460" height="539.0" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="55" y="3886.0" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="77.0" y="3900.35" xml:space="preserve">alt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="107" y="3901.35" xml:space="preserve">[entrou numa rota entretanto]</tspan>
+</text>
+<polyline points="55,4091.5 1515,4091.5" fill="none" stroke="#1971c2" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="63" y="4106.85" xml:space="preserve">[removido]</tspan>
+</text>
+<rect x="45" y="3447.5" width="1480" height="991.5" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="45" y="3447.5" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="67.0" y="3461.85" xml:space="preserve">alt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="97" y="3462.85" xml:space="preserve">[faz parte de uma rota ativa]</tspan>
+</text>
+<polyline points="45,3528.5 1525,3528.5" fill="none" stroke="#1971c2" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="53" y="3543.85" xml:space="preserve">[sem rota ativa]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#495057" text-anchor="start" opacity="1.0">
+<tspan x="40" y="20.35" xml:space="preserve">Legenda: ▶ cheia = pedido síncrono (REST/HTTPS)  ·  ⇢ aberta = mensagem assíncrona (MQTT via Mosquitto ou WebSocket)  ·  - - ⇢ tracejada = resposta</tspan>
+</text>
+</svg>

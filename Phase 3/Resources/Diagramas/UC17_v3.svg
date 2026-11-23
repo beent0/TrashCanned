@@ -1,0 +1,304 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1810" height="3288" viewBox="-140 -22 1810 3288.25">
+<rect x="-140" y="-22" width="1810" height="3288.25" fill="#ffffff"/>
+<defs><marker id="tri" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="24" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="62.8" xml:space="preserve">UC17 – Enviar leitura de nível de enchimento: fluxo principal</tspan>
+</text>
+<rect x="48" y="90" width="184" height="56" rx="6.72" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="140.0" y="113.8" xml:space="preserve">Simulador de sensor</tspan>
+<tspan x="140.0" y="131.3" xml:space="preserve">(1 sensor de volume)</tspan>
+</text>
+<polyline points="140,146 140,1787.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="263" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="113.8" xml:space="preserve">Mosquitto</tspan>
+<tspan x="355.0" y="131.3" xml:space="preserve">(broker MQTT)</tspan>
+</text>
+<polyline points="355,146 355,1787.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="478" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="113.8" xml:space="preserve">Monitorização &amp; Alertas</tspan>
+<tspan x="570.0" y="131.3" xml:space="preserve">(microserviço)</tspan>
+</text>
+<polyline points="570,146 570,1787.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="693" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="785.0" y="113.8" xml:space="preserve">PostgreSQL</tspan>
+<tspan x="785.0" y="131.3" xml:space="preserve">schema monitorizacao</tspan>
+</text>
+<polyline points="785,146 785,1787.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="908" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="122.55" xml:space="preserve">WebSocket gateway</tspan>
+</text>
+<polyline points="1000,146 1000,1787.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1123" y="90" width="184" height="56" rx="6.72" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1215.0" y="113.8" xml:space="preserve">Web App</tspan>
+<tspan x="1215.0" y="131.3" xml:space="preserve">(Operador / Supervisor)</tspan>
+</text>
+<polyline points="1215,146 1215,1787.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="203.3" xml:space="preserve">CONNECT (client_id =</tspan>
+<tspan x="247.5" y="220.8" xml:space="preserve">sensor_id, credenciais MQTT</tspan>
+<tspan x="247.5" y="238.3" xml:space="preserve">do sensor)</tspan>
+</text>
+<polyline points="140,246.5 355,246.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="277.8" xml:space="preserve">CONNACK (aceite)</tspan>
+</text>
+<polyline points="355,286.0 140,286.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<rect x="148" y="304.0" width="311.75" height="58.75" rx="0" fill="#fff9db" stroke="#f08c00" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#7a4a00" text-anchor="start" opacity="1.0">
+<tspan x="154" y="321.35" xml:space="preserve">Publica a cada 15 min ou quando o nível</tspan>
+<tspan x="154" y="337.6" xml:space="preserve">varia ≥ 10 p.p. desde a última leitura</tspan>
+<tspan x="154" y="353.85" xml:space="preserve">enviada.</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="390.05" xml:space="preserve">PUBLISH sensores/{sensor_id</tspan>
+<tspan x="247.5" y="407.55" xml:space="preserve">}/leitura {sensor_id,</tspan>
+<tspan x="247.5" y="425.05" xml:space="preserve">nivel_enchimento,</tspan>
+<tspan x="247.5" y="442.55" xml:space="preserve">data_hora} (QoS 1)</tspan>
+</text>
+<polyline points="140,450.75 355,450.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="482.05" xml:space="preserve">PUBACK</tspan>
+</text>
+<polyline points="355,490.25 140,490.25" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<rect x="363" y="508.25" width="311.75" height="75.0" rx="0" fill="#fff9db" stroke="#f08c00" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#7a4a00" text-anchor="start" opacity="1.0">
+<tspan x="369" y="525.6" xml:space="preserve">O Mosquitto entrega a mensagem à</tspan>
+<tspan x="369" y="541.85" xml:space="preserve">subscrição partilhada $share/monitorizacao/</tspan>
+<tspan x="369" y="558.1" xml:space="preserve">sensores/+/leitura: só uma réplica a</tspan>
+<tspan x="369" y="574.35" xml:space="preserve">processa (evento leitura.recebida).</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="610.55" xml:space="preserve">PUBLISH sensores/{id}/leitura</tspan>
+<tspan x="462.5" y="628.05" xml:space="preserve">(QoS 1, sessão persistente)</tspan>
+</text>
+<polyline points="355,636.25 570,636.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="570,654.25 600,654.25 600,676.25 570,676.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="608" y="667.55" xml:space="preserve">validarLeitura(): campos</tspan>
+<tspan x="608" y="685.05" xml:space="preserve">obrigatórios, nível 0–100, data ISO</tspan>
+<tspan x="608" y="702.55" xml:space="preserve">8601</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="736.05" xml:space="preserve">SELECT leitura WHERE</tspan>
+<tspan x="677.5" y="753.55" xml:space="preserve">sensor_id AND data_hora</tspan>
+</text>
+<polyline points="570,761.75 785,761.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="793.05" xml:space="preserve">nenhuma (não é duplicada)</tspan>
+</text>
+<polyline points="785,801.25 570,801.25" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="832.55" xml:space="preserve">BEGIN · INSERT leituras ·</tspan>
+<tspan x="677.5" y="850.05" xml:space="preserve">UPDATE copia_contentores</tspan>
+<tspan x="677.5" y="867.55" xml:space="preserve">(nivel_atual,</tspan>
+<tspan x="677.5" y="885.05" xml:space="preserve">ultima_comunicacao)</tspan>
+</text>
+<polyline points="570,893.25 785,893.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="924.55" xml:space="preserve">SELECT limiar_aviso,</tspan>
+<tspan x="677.5" y="942.05" xml:space="preserve">limiar_critico, alerta</tspan>
+<tspan x="677.5" y="959.55" xml:space="preserve">ativo do contentor</tspan>
+</text>
+<polyline points="570,967.75 785,967.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="999.05" xml:space="preserve">limiares, alertaAtivo</tspan>
+</text>
+<polyline points="785,1007.25 570,1007.25" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="1064.55" xml:space="preserve">INSERT alerta</tspan>
+<tspan x="677.5" y="1082.05" xml:space="preserve">CONTENTOR_CHEIO · UPDATE</tspan>
+<tspan x="677.5" y="1099.55" xml:space="preserve">alerta</tspan>
+<tspan x="677.5" y="1117.05" xml:space="preserve">CONTENTOR_QUASE_CHEIO →</tspan>
+<tspan x="677.5" y="1134.55" xml:space="preserve">RESOLVIDO (escalada)</tspan>
+</text>
+<polyline points="570,1142.75 785,1142.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="1204.05" xml:space="preserve">INSERT alerta</tspan>
+<tspan x="677.5" y="1221.55" xml:space="preserve">CONTENTOR_QUASE_CHEIO</tspan>
+<tspan x="677.5" y="1239.05" xml:space="preserve">(ATIVO)</tspan>
+</text>
+<polyline points="570,1247.25 785,1247.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<polyline points="570,1295.25 600,1295.25 600,1317.25 570,1317.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="608" y="1308.55" xml:space="preserve">não cria alerta</tspan>
+</text>
+<rect x="45" y="1025.25" width="1265" height="318.0" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="45" y="1025.25" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="67.0" y="1039.6" xml:space="preserve">alt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="97" y="1040.6" xml:space="preserve">[nivel ≥ limiar_critico e não existe CONTENTOR_CHEIO ativo]</tspan>
+</text>
+<polyline points="45,1164.75 1310,1164.75" fill="none" stroke="#1971c2" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="53" y="1180.1" xml:space="preserve">[limiar_aviso ≤ nivel &lt; limiar_critico e não existe alerta ativo]</tspan>
+</text>
+<polyline points="45,1269.25 1310,1269.25" fill="none" stroke="#1971c2" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="53" y="1284.6" xml:space="preserve">[nivel &lt; limiar_aviso ou alerta equivalente já ativo]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="1368.55" xml:space="preserve">COMMIT</tspan>
+</text>
+<polyline points="570,1376.75 785,1376.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="1434.05" xml:space="preserve">PUBLISH</tspan>
+<tspan x="462.5" y="1451.55" xml:space="preserve">eventos/alerta/criado</tspan>
+<tspan x="462.5" y="1469.05" xml:space="preserve">{alerta_id, tipo,</tspan>
+<tspan x="462.5" y="1486.55" xml:space="preserve">contentor_id, nivel} (QoS 1)</tspan>
+</text>
+<polyline points="570,1494.75 355,1494.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="1526.05" xml:space="preserve">PUBLISH eventos/alerta/criado (subscrição eventos/alerta/# em cada réplica)</tspan>
+</text>
+<polyline points="355,1534.25 1000,1534.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="1000,1552.25 1030,1552.25 1030,1574.25 1000,1574.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="1038" y="1565.55" xml:space="preserve">filtrar destinatários por perfil</tspan>
+<tspan x="1038" y="1583.05" xml:space="preserve">(JWT): operadores e supervisores</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1107.5" y="1616.55" xml:space="preserve">wss: evento alerta.criado</tspan>
+</text>
+<polyline points="1000,1624.75 1215,1624.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="1215,1642.75 1245,1642.75 1245,1664.75 1215,1664.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="1253" y="1656.05" xml:space="preserve">atualiza mapa e lista de alertas</tspan>
+</text>
+<rect x="45" y="1394.75" width="1265" height="296.0" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="45" y="1394.75" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="67.0" y="1409.1" xml:space="preserve">opt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="97" y="1410.1" xml:space="preserve">[alerta criado]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="1716.05" xml:space="preserve">PUBACK (leitura.recebida)</tspan>
+<tspan x="462.5" y="1733.55" xml:space="preserve">– só depois do COMMIT</tspan>
+</text>
+<polyline points="570,1759.25 355,1759.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="24" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="1920.05" xml:space="preserve">UC17 – Erro: credenciais do sensor inválidas ou revogadas</tspan>
+</text>
+<rect x="48" y="1947.25" width="184" height="56" rx="6.72" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="140.0" y="1971.05" xml:space="preserve">Simulador de sensor</tspan>
+<tspan x="140.0" y="1988.55" xml:space="preserve">(1 sensor de volume)</tspan>
+</text>
+<polyline points="140,2003.25 140,2222.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="263" y="1947.25" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="1971.05" xml:space="preserve">Mosquitto</tspan>
+<tspan x="355.0" y="1988.55" xml:space="preserve">(broker MQTT)</tspan>
+</text>
+<polyline points="355,2003.25 355,2222.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="2060.55" xml:space="preserve">CONNECT (client_id =</tspan>
+<tspan x="247.5" y="2078.05" xml:space="preserve">sensor_id, credenciais)</tspan>
+</text>
+<polyline points="140,2086.25 355,2086.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="2117.55" xml:space="preserve">CONNACK recusado (not</tspan>
+<tspan x="247.5" y="2135.05" xml:space="preserve">authorized)</tspan>
+</text>
+<polyline points="355,2143.25 140,2143.25" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="140,2161.25 170,2161.25 170,2183.25 140,2183.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="178" y="2174.55" xml:space="preserve">guarda as leituras em memória local</tspan>
+<tspan x="178" y="2192.05" xml:space="preserve">e tenta reconectar com backoff</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="24" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="2355.05" xml:space="preserve">UC17 – Erro: leitura inválida</tspan>
+</text>
+<rect x="48" y="2382.25" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="140.0" y="2406.05" xml:space="preserve">Mosquitto</tspan>
+<tspan x="140.0" y="2423.55" xml:space="preserve">(broker MQTT)</tspan>
+</text>
+<polyline points="140,2438.25 140,2674.75" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="263" y="2382.25" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="2406.05" xml:space="preserve">Monitorização &amp; Alertas</tspan>
+<tspan x="355.0" y="2423.55" xml:space="preserve">(microserviço)</tspan>
+</text>
+<polyline points="355,2438.25 355,2674.75" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="478" y="2382.25" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="2406.05" xml:space="preserve">PostgreSQL</tspan>
+<tspan x="570.0" y="2423.55" xml:space="preserve">schema monitorizacao</tspan>
+</text>
+<polyline points="570,2438.25 570,2674.75" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="2495.55" xml:space="preserve">PUBLISH sensores/{id}/leitura</tspan>
+</text>
+<polyline points="140,2503.75 355,2503.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="355,2521.75 385,2521.75 385,2543.75 355,2543.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="393" y="2535.05" xml:space="preserve">validarLeitura() falha (nível fora</tspan>
+<tspan x="393" y="2552.55" xml:space="preserve">de 0–100, campo em falta ou data</tspan>
+<tspan x="393" y="2570.05" xml:space="preserve">inválida)</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="2603.55" xml:space="preserve">PUBACK (descarta; regista</tspan>
+<tspan x="247.5" y="2621.05" xml:space="preserve">o erro e publica em</tspan>
+<tspan x="247.5" y="2638.55" xml:space="preserve">erros/leituras)</tspan>
+</text>
+<polyline points="355,2646.75 140,2646.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="24" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="2807.55" xml:space="preserve">UC17 – Erro: leitura duplicada</tspan>
+</text>
+<rect x="48" y="2834.75" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="140.0" y="2858.55" xml:space="preserve">Mosquitto</tspan>
+<tspan x="140.0" y="2876.05" xml:space="preserve">(broker MQTT)</tspan>
+</text>
+<polyline points="140,2890.75 140,3236.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="263" y="2834.75" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="2858.55" xml:space="preserve">Monitorização &amp; Alertas</tspan>
+<tspan x="355.0" y="2876.05" xml:space="preserve">(microserviço)</tspan>
+</text>
+<polyline points="355,2890.75 355,3236.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="478" y="2834.75" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="2858.55" xml:space="preserve">PostgreSQL</tspan>
+<tspan x="570.0" y="2876.05" xml:space="preserve">schema monitorizacao</tspan>
+</text>
+<polyline points="570,2890.75 570,3236.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="2948.05" xml:space="preserve">PUBLISH sensores/{id}/leitura</tspan>
+<tspan x="247.5" y="2965.55" xml:space="preserve">(reentrega QoS 1,</tspan>
+<tspan x="247.5" y="2983.05" xml:space="preserve">flag DUP)</tspan>
+</text>
+<polyline points="140,2991.25 355,2991.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="355,3009.25 385,3009.25 385,3031.25 355,3031.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="393" y="3022.55" xml:space="preserve">validarLeitura() ok</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="3068.55" xml:space="preserve">SELECT leitura WHERE</tspan>
+<tspan x="462.5" y="3086.05" xml:space="preserve">sensor_id AND data_hora</tspan>
+</text>
+<polyline points="355,3094.25 570,3094.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="3125.55" xml:space="preserve">leitura existente</tspan>
+</text>
+<polyline points="570,3133.75 355,3133.75" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="3165.05" xml:space="preserve">PUBACK (ignora: não</tspan>
+<tspan x="247.5" y="3182.55" xml:space="preserve">guarda, não cria alerta,</tspan>
+<tspan x="247.5" y="3200.05" xml:space="preserve">não publica)</tspan>
+</text>
+<polyline points="355,3208.25 140,3208.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#495057" text-anchor="start" opacity="1.0">
+<tspan x="40" y="20.35" xml:space="preserve">Legenda: ▶ cheia = pedido síncrono (REST/HTTPS)  ·  ⇢ aberta = mensagem assíncrona (MQTT via Mosquitto ou WebSocket)  ·  - - ⇢ tracejada = resposta</tspan>
+</text>
+</svg>

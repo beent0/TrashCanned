@@ -1,0 +1,355 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2345" height="3035" viewBox="-140 -22 2345 3035.25">
+<rect x="-140" y="-22" width="2345" height="3035.25" fill="#ffffff"/>
+<defs><marker id="tri" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="context-stroke"/></marker><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10" fill="none" stroke="context-stroke" stroke-width="1.5"/></marker></defs>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="24" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1107.5" y="62.8" xml:space="preserve">UC19 – Gerar rota automaticamente: fluxo principal</tspan>
+</text>
+<rect x="48" y="90" width="184" height="56" rx="6.72" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="140.0" y="113.8" xml:space="preserve">Temporizador</tspan>
+<tspan x="140.0" y="131.3" xml:space="preserve">(cron 06:00)</tspan>
+</text>
+<polyline points="140,146 140,1391.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="263" y="90" width="184" height="56" rx="6.72" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="113.8" xml:space="preserve">Supervisor</tspan>
+<tspan x="355.0" y="131.3" xml:space="preserve">(Web App)</tspan>
+</text>
+<polyline points="355,146 355,1391.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="478" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="122.55" xml:space="preserve">Web Experience API</tspan>
+</text>
+<polyline points="570,146 570,1391.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="693" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="785.0" y="113.8" xml:space="preserve">Rotas</tspan>
+<tspan x="785.0" y="131.3" xml:space="preserve">(Process API)</tspan>
+</text>
+<polyline points="785,146 785,1391.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="908" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="122.55" xml:space="preserve">Monitorização &amp; Alertas</tspan>
+</text>
+<polyline points="1000,146 1000,1391.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1123" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1215.0" y="105.05" xml:space="preserve">System API</tspan>
+<tspan x="1215.0" y="122.55" xml:space="preserve">rotas · paragens ·</tspan>
+<tspan x="1215.0" y="140.05" xml:space="preserve">depósitos</tspan>
+</text>
+<polyline points="1215,146 1215,1391.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1338" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1430.0" y="113.8" xml:space="preserve">System API otimização</tspan>
+<tspan x="1430.0" y="131.3" xml:space="preserve">(adaptador ORS)</tspan>
+</text>
+<polyline points="1430,146 1430,1391.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1553" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1645.0" y="113.8" xml:space="preserve">OpenRouteService</tspan>
+<tspan x="1645.0" y="131.3" xml:space="preserve">/optimization (VROOM)</tspan>
+</text>
+<polyline points="1645,146 1645,1391.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1768" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1860.0" y="122.55" xml:space="preserve">Mosquitto</tspan>
+</text>
+<polyline points="1860,146 1860,1391.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="1983" y="90" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="2075.0" y="122.55" xml:space="preserve">WebSocket gateway</tspan>
+</text>
+<polyline points="2075,146 2075,1391.5" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="229.3" xml:space="preserve">gerarRota(data)</tspan>
+</text>
+<polyline points="140,237.5 785,237.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="298.8" xml:space="preserve">POST</tspan>
+<tspan x="462.5" y="316.3" xml:space="preserve">/api/v1/exp/rotas/gerar</tspan>
+<tspan x="462.5" y="333.8" xml:space="preserve">(JWT SUPERVISOR)</tspan>
+</text>
+<polyline points="355,342.0 570,342.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="373.3" xml:space="preserve">POST</tspan>
+<tspan x="677.5" y="390.8" xml:space="preserve">/api/v1/process/rotas/gerar</tspan>
+</text>
+<polyline points="570,399.0 785,399.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<rect x="45" y="190" width="2125" height="229.0" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="45" y="190" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="67.0" y="204.35" xml:space="preserve">alt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="97" y="205.35" xml:space="preserve">[geração automática]</tspan>
+</text>
+<polyline points="45,259.5 2170,259.5" fill="none" stroke="#1971c2" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="53" y="274.85" xml:space="preserve">[geração manual]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="444.3" xml:space="preserve">GET /api/v1/process/monitor</tspan>
+<tspan x="892.5" y="461.8" xml:space="preserve">izacao/contentores?estado=A</tspan>
+<tspan x="892.5" y="479.3" xml:space="preserve">VISO,CRITICO (nível ≥</tspan>
+<tspan x="892.5" y="496.8" xml:space="preserve">limiar_aviso)</tspan>
+</text>
+<polyline points="785,505.0 1000,505.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="536.3" xml:space="preserve">200 contentores elegíveis</tspan>
+<tspan x="892.5" y="553.8" xml:space="preserve">[id, latitude, longitude,</tspan>
+<tspan x="892.5" y="571.3" xml:space="preserve">nivel_atual]</tspan>
+</text>
+<polyline points="1000,579.5 785,579.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="610.8" xml:space="preserve">GET /api/v1/system/depositos/{id}</tspan>
+</text>
+<polyline points="785,619.0 1215,619.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="650.3" xml:space="preserve">200 depósito (latitude, longitude)</tspan>
+</text>
+<polyline points="1215,658.5 785,658.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1107.5" y="689.8" xml:space="preserve">POST /api/v1/system/otimizacao/calcular {ponto_partida, contentores}</tspan>
+</text>
+<polyline points="785,698.0 1430,698.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<polyline points="1430,716.0 1460,716.0 1460,738.0 1430,738.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="1468" y="729.3" xml:space="preserve">converter [lat, lng] → [lng, lat]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1537.5" y="775.3" xml:space="preserve">POST /optimization (jobs =</tspan>
+<tspan x="1537.5" y="792.8" xml:space="preserve">contentores, vehicle</tspan>
+<tspan x="1537.5" y="810.3" xml:space="preserve">start/end = depósito)</tspan>
+</text>
+<polyline points="1430,818.5 1645,818.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="1537.5" y="849.8" xml:space="preserve">200 steps ordenados,</tspan>
+<tspan x="1537.5" y="867.3" xml:space="preserve">distance, duration</tspan>
+</text>
+<polyline points="1645,875.5 1430,875.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="1430,893.5 1460,893.5 1460,915.5 1430,915.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="1468" y="906.8" xml:space="preserve">converter [lng, lat] → [lat, lng]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="1107.5" y="952.8" xml:space="preserve">200 {sequencia_paragens, distancia_total_km, duracao_total_min}</tspan>
+</text>
+<polyline points="1430,961.0 785,961.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="992.3" xml:space="preserve">POST /api/v1/system/rotas {estado: GERADA, otimizada:</tspan>
+<tspan x="1000.0" y="1009.8" xml:space="preserve">true, paragens[]}</tspan>
+</text>
+<polyline points="785,1018.0 1215,1018.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<polyline points="1215,1036.0 1245,1036.0 1245,1058.0 1215,1058.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="1253" y="1049.3" xml:space="preserve">INSERT rotas + paragens (uma</tspan>
+<tspan x="1253" y="1066.8" xml:space="preserve">transação, schema core)</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="1100.3" xml:space="preserve">201 rota</tspan>
+</text>
+<polyline points="1215,1108.5 785,1108.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1322.5" y="1139.8" xml:space="preserve">PUBLISH eventos/rota/gerada {rota_id, otimizada, n_paragens} (QoS 1)</tspan>
+</text>
+<polyline points="785,1148.0 1860,1148.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="1205.3" xml:space="preserve">201 rota (GERADA)</tspan>
+</text>
+<polyline points="785,1213.5 570,1213.5" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="1244.8" xml:space="preserve">201 rota (GERADA)</tspan>
+</text>
+<polyline points="570,1253.0 355,1253.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<rect x="45" y="1166.0" width="2125" height="107.0" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="45" y="1166.0" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="67.0" y="1180.35" xml:space="preserve">opt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="97" y="1181.35" xml:space="preserve">[geração manual]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1967.5" y="1298.3" xml:space="preserve">PUBLISH</tspan>
+<tspan x="1967.5" y="1315.8" xml:space="preserve">eventos/rota/gerada</tspan>
+</text>
+<polyline points="1860,1324.0 2075,1324.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1215.0" y="1355.3" xml:space="preserve">wss: rota.gerada (só perfil SUPERVISOR)</tspan>
+</text>
+<polyline points="2075,1363.5 355,1363.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="24" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="1524.3" xml:space="preserve">UC19 – Erro: nenhum contentor elegível</tspan>
+</text>
+<rect x="48" y="1551.5" width="184" height="56" rx="6.72" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="140.0" y="1575.3" xml:space="preserve">Temporizador</tspan>
+<tspan x="140.0" y="1592.8" xml:space="preserve">(cron 06:00)</tspan>
+</text>
+<polyline points="140,1607.5 140,2204.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="263" y="1551.5" width="184" height="56" rx="6.72" fill="#a5d8ff" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="1575.3" xml:space="preserve">Supervisor</tspan>
+<tspan x="355.0" y="1592.8" xml:space="preserve">(Web App)</tspan>
+</text>
+<polyline points="355,1607.5 355,2204.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="478" y="1551.5" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="1584.05" xml:space="preserve">Web Experience API</tspan>
+</text>
+<polyline points="570,1607.5 570,2204.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="693" y="1551.5" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="785.0" y="1575.3" xml:space="preserve">Rotas</tspan>
+<tspan x="785.0" y="1592.8" xml:space="preserve">(Process API)</tspan>
+</text>
+<polyline points="785,1607.5 785,2204.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="908" y="1551.5" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="1584.05" xml:space="preserve">Monitorização &amp; Alertas</tspan>
+</text>
+<polyline points="1000,1607.5 1000,2204.0" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="1690.8" xml:space="preserve">gerarRota(data)</tspan>
+</text>
+<polyline points="140,1699.0 785,1699.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="1760.3" xml:space="preserve">POST</tspan>
+<tspan x="462.5" y="1777.8" xml:space="preserve">/api/v1/exp/rotas/gerar</tspan>
+</text>
+<polyline points="355,1786.0 570,1786.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="1817.3" xml:space="preserve">POST</tspan>
+<tspan x="677.5" y="1834.8" xml:space="preserve">/api/v1/process/rotas/gerar</tspan>
+</text>
+<polyline points="570,1843.0 785,1843.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<rect x="45" y="1651.5" width="1050" height="211.5" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="45" y="1651.5" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="67.0" y="1665.85" xml:space="preserve">alt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="97" y="1666.85" xml:space="preserve">[geração automática]</tspan>
+</text>
+<polyline points="45,1721.0 1095,1721.0" fill="none" stroke="#1971c2" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="53" y="1736.35" xml:space="preserve">[geração manual]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="1888.3" xml:space="preserve">GET /api/v1/process/monitor</tspan>
+<tspan x="892.5" y="1905.8" xml:space="preserve">izacao/contentores?estado=A</tspan>
+<tspan x="892.5" y="1923.3" xml:space="preserve">VISO,CRITICO</tspan>
+</text>
+<polyline points="785,1931.5 1000,1931.5" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="892.5" y="1962.8" xml:space="preserve">200 [] (lista vazia)</tspan>
+</text>
+<polyline points="1000,1971.0 785,1971.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="785,1989.0 815,1989.0 815,2011.0 785,2011.0" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="823" y="2002.3" xml:space="preserve">regista execução sem rota; não</tspan>
+<tspan x="823" y="2019.8" xml:space="preserve">publica evento</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="2079.3" xml:space="preserve">422 nenhum contentor</tspan>
+<tspan x="677.5" y="2096.8" xml:space="preserve">elegível</tspan>
+</text>
+<polyline points="785,2105.0 570,2105.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="462.5" y="2136.3" xml:space="preserve">422 nenhum contentor</tspan>
+<tspan x="462.5" y="2153.8" xml:space="preserve">atingiu o limiar de aviso</tspan>
+</text>
+<polyline points="570,2162.0 355,2162.0" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<rect x="45" y="2040.0" width="1050" height="142.0" rx="0" fill="none" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<rect x="45" y="2040.0" width="44" height="20" rx="0" fill="#d0ebff" stroke="#1971c2" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="middle" opacity="1.0">
+<tspan x="67.0" y="2054.35" xml:space="preserve">opt</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#1971c2" text-anchor="start" opacity="1.0">
+<tspan x="97" y="2055.35" xml:space="preserve">[geração manual]</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="24" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="2336.8" xml:space="preserve">UC19 – Erro: OpenRouteService indisponível (fallback não otimizado)</tspan>
+</text>
+<rect x="48" y="2364.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="140.0" y="2387.8" xml:space="preserve">Rotas</tspan>
+<tspan x="140.0" y="2405.3" xml:space="preserve">(Process API)</tspan>
+</text>
+<polyline points="140,2420.0 140,2983.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="263" y="2364.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="2379.05" xml:space="preserve">System API</tspan>
+<tspan x="355.0" y="2396.55" xml:space="preserve">rotas · paragens ·</tspan>
+<tspan x="355.0" y="2414.05" xml:space="preserve">depósitos</tspan>
+</text>
+<polyline points="355,2420.0 355,2983.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="478" y="2364.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="2387.8" xml:space="preserve">System API otimização</tspan>
+<tspan x="570.0" y="2405.3" xml:space="preserve">(adaptador ORS)</tspan>
+</text>
+<polyline points="570,2420.0 570,2983.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="693" y="2364.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="785.0" y="2387.8" xml:space="preserve">OpenRouteService</tspan>
+<tspan x="785.0" y="2405.3" xml:space="preserve">/optimization (VROOM)</tspan>
+</text>
+<polyline points="785,2420.0 785,2983.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="908" y="2364.0" width="184" height="56" rx="6.72" fill="#e9ecef" stroke="#1e1e1e" stroke-width="2" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="1000.0" y="2396.55" xml:space="preserve">Mosquitto</tspan>
+</text>
+<polyline points="1000,2420.0 1000,2983.25" fill="none" stroke="#868e96" stroke-width="1" stroke-dasharray="8 6" opacity="1.0"/>
+<rect x="148" y="2464.0" width="311.75" height="58.75" rx="0" fill="#fff9db" stroke="#f08c00" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#7a4a00" text-anchor="start" opacity="1.0">
+<tspan x="154" y="2481.35" xml:space="preserve">Já obteve contentores elegíveis e</tspan>
+<tspan x="154" y="2497.6" xml:space="preserve">depósito (passos iguais ao fluxo</tspan>
+<tspan x="154" y="2513.85" xml:space="preserve">principal).</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="2550.05" xml:space="preserve">POST /api/v1/system/otimizacao/calcular</tspan>
+</text>
+<polyline points="140,2558.25 570,2558.25" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="2589.55" xml:space="preserve">POST /optimization</tspan>
+</text>
+<polyline points="570,2597.75 785,2597.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="677.5" y="2629.05" xml:space="preserve">timeout / 5xx</tspan>
+</text>
+<polyline points="785,2637.25 570,2637.25" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="355.0" y="2668.55" xml:space="preserve">503 serviço de otimização indisponível</tspan>
+</text>
+<polyline points="570,2676.75 140,2676.75" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<polyline points="140,2694.75 170,2694.75 170,2716.75 140,2716.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="start" opacity="1.0">
+<tspan x="178" y="2708.05" xml:space="preserve">ordenarPorVizinhoMaisProximo(content</tspan>
+<tspan x="178" y="2725.55" xml:space="preserve">ores, depósito); distância estimada</tspan>
+<tspan x="178" y="2743.05" xml:space="preserve">em linha reta</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="2776.55" xml:space="preserve">POST /api/v1/system/rotas</tspan>
+<tspan x="247.5" y="2794.05" xml:space="preserve">{estado: GERADA, otimizada:</tspan>
+<tspan x="247.5" y="2811.55" xml:space="preserve">false, paragens[]}</tspan>
+</text>
+<polyline points="140,2819.75 355,2819.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#tri)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#495057" text-anchor="middle" opacity="1.0">
+<tspan x="247.5" y="2851.05" xml:space="preserve">201 rota</tspan>
+</text>
+<polyline points="355,2859.25 140,2859.25" fill="none" stroke="#1e1e1e" stroke-width="1" stroke-dasharray="8 6" marker-end="url(#arr)" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="14" fill="#1e1e1e" text-anchor="middle" opacity="1.0">
+<tspan x="570.0" y="2890.55" xml:space="preserve">PUBLISH eventos/rota/gerada {rota_id, otimizada: false} (QoS 1)</tspan>
+</text>
+<polyline points="140,2898.75 1000,2898.75" fill="none" stroke="#1e1e1e" stroke-width="1" marker-end="url(#arr)" opacity="1.0"/>
+<rect x="148" y="2916.75" width="311.75" height="42.5" rx="0" fill="#fff9db" stroke="#f08c00" stroke-width="1" opacity="1.0"/>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#7a4a00" text-anchor="start" opacity="1.0">
+<tspan x="154" y="2934.1" xml:space="preserve">O supervisor vê a rota marcada como não</tspan>
+<tspan x="154" y="2950.35" xml:space="preserve">otimizada antes de a aprovar.</tspan>
+</text>
+<text font-family="'Liberation Sans', Arial, Helvetica, sans-serif" font-size="13" fill="#495057" text-anchor="start" opacity="1.0">
+<tspan x="40" y="20.35" xml:space="preserve">Legenda: ▶ cheia = pedido síncrono (REST/HTTPS)  ·  ⇢ aberta = mensagem assíncrona (MQTT via Mosquitto ou WebSocket)  ·  - - ⇢ tracejada = resposta</tspan>
+</text>
+</svg>
