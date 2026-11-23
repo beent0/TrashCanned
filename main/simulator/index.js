@@ -2,7 +2,7 @@
 // Config and behaviour: decisions doc §7 and .env.example.
 import { readFileSync } from 'node:fs';
 import mqtt from 'mqtt';
-import { ZONAS_PADRAO, horaAcores, proximoNivel, taxaAtual } from './sim.js';
+import { ZONAS_PADRAO, horaAcores, proximoNivel, silencioso, taxaAtual } from './sim.js';
 
 const env = process.env;
 const url = env.MQTT_URL || 'mqtt://localhost:1883';
@@ -38,13 +38,14 @@ function ligar(nome, username, password) {
 
 const sensores = configs.map((c) => ({ ...c, nivel: Math.random() * 50, client: ligar(c.id, c.id, c.password) }));
 
-let ultimo = Date.now();
+const inicio = Date.now();
+let ultimo = inicio;
 setInterval(() => {
   const agora = Date.now();
   const hora = horaAcores(new Date(agora));
   for (const s of sensores) {
     s.nivel = proximoNivel(s.nivel, taxaAtual(zonas[s.zona], hora, s.taxa_pct_h), agora - ultimo, speed);
-    if (!s.client.connected) continue;
+    if (silencioso(s.silencioso, inicio, agora) || !s.client.connected) continue;
     const leitura = { sensor_id: s.id, nivel_enchimento: Number(s.nivel.toFixed(1)), data_hora: new Date(agora).toISOString() };
     s.client.publish(`sensores/${s.id}/leitura`, JSON.stringify(leitura), { qos: 1 }, (err) => {
       if (err) console.error(`${s.id}: publicação recusada: ${err.message}`);

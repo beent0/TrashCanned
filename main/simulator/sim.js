@@ -28,3 +28,11 @@ export function taxaAtual(zona, hora, taxaSensor) {
 // Stops at 100 %: only a pickup (recolha.registada) empties the container.
 export const proximoNivel = (nivel, taxaPctH, dtMs, speed) =>
   Math.min(100, nivel + taxaPctH * (dtMs / 3_600_000) * speed);
+
+// Silent window in real minutes since start, not affected by SPEED.
+export function silencioso(cfg, inicioMs, agoraMs) {
+  if (!cfg) return false;
+  const de = inicioMs + cfg.apos_min * 60_000;
+  return agoraMs >= de && agoraMs < de + cfg.duracao_min * 60_000;
+}
+
