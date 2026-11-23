@@ -84,14 +84,16 @@ Só regista o que muda em relação ao SDD da Fase 2. Quando não coincidem, pre
 - **Calibração (UC16):** com o contentor vazio, leitura_referencia = último nivel_medido do sensor e correcao_pp = −leitura_referencia. O técnico confirma que a leitura seguinte aparece a 0 %. Porquê: partir do valor bruto torna a recalibração independente da correção anterior.
 - **Recalibração obrigatória:** depois de instalar, mudar de contentor ou reparar o sensor; a cada 6 meses; quando um contentor esvaziado continua acima de 5 % depois da recolha. O técnico verifica manualmente (ultima_calibracao, níveis depois da recolha); não há alerta automático na Fase 3. Porquê: um alerta novo (tipo, enum e ecrã) não cabe no Sprint 1.
 
-## 5. Stack local de desenvolvimento
+## 5. Organização do código e stack local de desenvolvimento
 
 *KAN-53 · 2026-11-23*
 
-**Porquê:** arrancar o sistema inteiro com um comando antes de haver Kubernetes; uma só imagem mantém um único build do backend e do frontend.
+**Porquê:** os três deployments partilham o cliente Prisma, os DTO e o cliente MQTT, e um só projeto evita três package.json e três pipelines de CI para uma equipa de cinco em quatro semanas; o docker-compose arranca o sistema inteiro com um comando antes de haver Kubernetes.
 
+- Um só projeto NestJS (`main/backend`) para os três deployments. Cada deployment tem o seu módulo raiz (ExperienceModule, CoreModule, MonitorizacaoModule) e a variável de ambiente SERVICE escolhe qual arranca. Porquê: se for preciso separar um deployment, o módulo raiz já é a fronteira.
+- Todos usam o prefixo /api/v1 e expõem GET /api/v1/health para as sondas do Kubernetes.
+- Um só Dockerfile (`main/Dockerfile`) com um target por deployment (`--target experience`, `core` ou `monitorizacao`); cada target produz a sua imagem (NFR-13). A imagem do experience inclui o build do React em public/, servido pelo @nestjs/serve-static.
 - `docker compose up --build` em `main/`: postgres 16, mosquitto 2, core, monitorizacao, experience (http://localhost:8080) e o simulador.
-- Uma imagem (`main/Dockerfile`) com os targets core, monitorizacao e experience.
 - Mosquitto em desenvolvimento: porta 1883, ligações anónimas, sem TLS nem dynamic security, persistence true. Fica assim até à KAN-56.
 - O simulador corre dentro do compose (no Kubernetes corre fora do cluster).
 

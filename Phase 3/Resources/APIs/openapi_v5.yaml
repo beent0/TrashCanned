@@ -3460,6 +3460,7 @@ components:
           type: boolean
           example: true
         empresa:
+          type: object
           allOf:
           - $ref: '#/components/schemas/Empresa'
           nullable: true
