@@ -1,6 +1,6 @@
 # TrashCanned — Fase 3 · Resources
 
-Material de referência para a implementação. As decisões da Fase 3 estão em `../TrashCanned_Fase3_Decisoes.pdf`; quando o SDD da Fase 2 e esse documento não coincidem, prevalece o documento da Fase 3.
+Material de referência para a implementação. As decisões da Fase 3 estão em `TrashCanned_Fase3_Decisoes.md`; quando o SDD da Fase 2 e esse documento não coincidem, prevalece o documento da Fase 3.
 
 | Pasta | Conteúdo |
 |---|---|
