@@ -53,6 +53,7 @@ jobs:
           cache: npm
           cache-dependency-path: main/simulator/package-lock.json
       - run: npm ci
+      # nfr34.test.js is skipped until KAN-56 provides the broker and NFR34_* secrets.
       - run: npm test
 
   openapi:
