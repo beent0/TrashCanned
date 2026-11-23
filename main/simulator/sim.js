@@ -36,3 +36,14 @@ export function silencioso(cfg, inicioMs, agoraMs) {
   return agoraMs >= de && agoraMs < de + cfg.duracao_min * 60_000;
 }
 
+// Keeps the newest `max` readings while the broker is down.
+export function guardar(buffer, item, max) {
+  buffer.push(item);
+  if (buffer.length > max) buffer.shift();
+}
+
+// Exponential backoff 1 s .. 60 s with equal jitter.
+export function atrasoReligacao(tentativa) {
+  const teto = Math.min(60_000, 1000 * 2 ** tentativa);
+  return teto / 2 + Math.random() * (teto / 2);
+}

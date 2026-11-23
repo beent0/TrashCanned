@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
-import { ZONAS_PADRAO, horaAcores, proximoNivel, silencioso, taxaAtual } from '../sim.js';
+import { ZONAS_PADRAO, atrasoReligacao, guardar, horaAcores, proximoNivel, silencioso, taxaAtual } from '../sim.js';
 
 const { turistica, residencial } = ZONAS_PADRAO;
 const HORA = 3_600_000;
@@ -28,4 +28,15 @@ test('janela de silêncio em minutos reais', () => {
   assert.equal(silencioso(cfg, 0, 10 * 60_000), true);
   assert.equal(silencioso(cfg, 0, 15 * 60_000), false);
   assert.equal(silencioso(undefined, 0, 0), false);
+});
+
+test('buffer guarda só as leituras mais recentes', () => {
+  const b = [];
+  for (let i = 1; i <= 5; i++) guardar(b, i, 3);
+  assert.deepEqual(b, [3, 4, 5]);
+});
+
+test('religação entre 0.5 s e 60 s', () => {
+  assert.ok(atrasoReligacao(0) >= 500 && atrasoReligacao(0) <= 1000);
+  assert.ok(atrasoReligacao(20) >= 30_000 && atrasoReligacao(20) <= 60_000);
 });
