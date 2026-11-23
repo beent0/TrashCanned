@@ -1953,8 +1953,8 @@ paths:
       tags:
       - Process - Rotas
       summary: Registar recolha; conclui a rota na última paragem
-      description: 'A Monitorização consome recolha.registada: repõe o nível a 0 e resolve os alertas de enchimento. Publica no Mosquitto (MQTT): recolha.registada,
-        rota.atualizada (se concluída).'
+      description: 'A Monitorização consome recolha.registada: repõe o nível a 0 e resolve os alertas de enchimento. Publica no Mosquitto (MQTT): recolha.registada
+        (payload RecolhaRegistadaEvento), rota.atualizada (se concluída).'
       x-eventos-publicados:
       - recolha.registada
       - rota.atualizada (se concluída)
@@ -4122,6 +4122,39 @@ components:
       - id
       - paragem_id
       - operador_id
+      - data_hora
+    RecolhaRegistadaEvento:
+      type: object
+      description: Payload MQTT de recolha.registada (tópico eventos/recolha/registada). sensor_id é o sensor associado ao contentor no momento da recolha;
+        o simulador usa-o para repor o nível do sensor (decisão 7).
+      properties:
+        recolha_id:
+          type: integer
+          example: 88
+        rota_id:
+          type: integer
+          example: 18
+        paragem_id:
+          type: integer
+          example: 51
+        contentor_id:
+          type: integer
+          example: 7
+        sensor_id:
+          type: string
+          nullable: true
+          example: SNS-SIM-001
+          description: null se o contentor não tiver sensor associado
+        data_hora:
+          type: string
+          format: date-time
+          example: '2026-11-19T14:25:00Z'
+      required:
+      - recolha_id
+      - rota_id
+      - paragem_id
+      - contentor_id
+      - sensor_id
       - data_hora
     OtimizacaoRequest:
       type: object

@@ -109,3 +109,21 @@ Só regista o que muda em relação ao SDD da Fase 2. Quando não coincidem, pre
 | NFR-09 | 50 leituras/s durante 5 min sem crescimento contínuo das mensagens guardadas no Mosquitto (\$SYS/broker/store/messages/count). A Monitorização escala para 2 ou mais réplicas sem alterações de código. |
 | NFR-13 | Substituir o OpenRouteService obriga a alterar só o adaptador de otimização. Cada um dos três deployments tem a sua imagem Docker. |
 | NFR-34 (novo) | Cada sensor só consegue publicar no seu tópico sensores/{sensor_id}/leitura; o broker recusa publicações noutros tópicos. |
+
+## 7. Simulador de sensores
+
+*KAN-48 · 2026-11-23*
+
+**Porquê:** a demonstração precisa de contentores que encham de forma credível, de sensores que se calam e de recolhas que esvaziam os contentores, sem hardware real.
+
+- **Um cliente MQTT por sensor**, com o sensor_id como client id e utilizador. Porquê: o broker autentica e autoriza por ligação (NFR-34); um cliente partilhado não teria as credenciais de cada sensor.
+- **Configuração:** variáveis de ambiente (`MQTT_URL`, `MQTT_CA`, `INTERVAL_MS`, `SPEED`) e `SENSORS_JSON` com, por sensor, id, palavra-passe, zona, `taxa_pct_h` opcional e janela de silêncio opcional. Sem `SENSORS_JSON`, `SENSORS=N` cria `SNS-SIM-001..N` com zonas alternadas. O TLS e as credenciais ligam-se pelo ambiente; até à KAN-56 o simulador usa a porta 1883 sem autenticação.
+- **As coordenadas ficam no contentor (Inventário), não no simulador.** Porquê: a leitura não leva o contentor (decisão 4); o simulador só conhece sensores.
+- **Zonas:** `turistica` (3 pp/h, ×2,5 das 10h às 19h) e `residencial` (2 pp/h, ×1,5 das 7h às 9h e das 19h às 22h), na hora dos Açores. São valores por omissão, alteráveis por `ZONAS_JSON` e, em tempo de execução, pelo painel (KAN-71). Porquê: o enunciado pede enchimento mais rápido nas horas de maior afluência turística, só nalguns contentores.
+- **`SPEED` só acelera o enchimento;** data_hora é sempre a hora real. Porquê: a Monitorização trata as leituras como atuais e a deteção de sensores sem comunicação usa o tempo real.
+- **Sem ruído nem leituras inválidas** nesta fase.
+- **Recolhas:** o nível para nos 100 % até chegar uma recolha. Os sensores não subscrevem (NFR-34), por isso um cliente só de teste, `sim-observador`, subscreve eventos/recolha/registada e repõe a 0 % o sensor indicado. O payload passa a levar sensor_id e contentor_id (RecolhaRegistadaEvento no OpenAPI). O papel do `sim-observador` existe só em desenvolvimento e teste (KAN-56). Porquê: o simulador reage a qualquer recolha registada, pelo operador real ou pelo simulador de operador (KAN-72), sem código de teste no backend.
+- **Sensores em silêncio:** janelas fixas `{apos_min, duracao_min}` em minutos reais, independentes de `SPEED`. Porquê: demonstração repetível do alerta de sensor sem comunicação.
+- **Broker em baixo:** cada sensor guarda até 500 leituras em memória e envia-as por ordem ao religar; religação com espera exponencial de 1 s a 60 s, com jitter. As leituras em memória perdem-se se o contentor do simulador reiniciar, como num sensor real.
+- **Teste NFR-34:** `main/simulator/test/nfr34.test.js` liga-se como um sensor em MQTT 5, publica no tópico de outro e espera PUBACK 0x87 (não autorizado). Fica desativado até a KAN-56 configurar o broker.
+- **Painel do simulador (KAN-71):** API de controlo e página estática servidas pelo simulador, protegidas por uma palavra-passe no `.env` (HTTP Basic), expostas como subdomínio pelo proxy do ambiente com HTTPS. O estado só existe em memória.

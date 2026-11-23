@@ -52,7 +52,10 @@ services:
     environment:
       MQTT_URL: mqtt://mosquitto:1883
       SENSORS: 3
-      INTERVAL_MS: 5000
+      INTERVAL_MS: ${INTERVAL_MS:-5000}
+      SPEED: ${SPEED:-1}
+      SENSORS_JSON: ${SENSORS_JSON:-}
+      ZONAS_JSON: ${ZONAS_JSON:-}
     depends_on: [mosquitto]
 
 volumes:
