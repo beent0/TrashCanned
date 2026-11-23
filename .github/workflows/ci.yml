@@ -40,6 +40,21 @@ jobs:
       - run: npm run lint
       - run: npm run build
 
+  simulator:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: main/simulator
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: main/simulator/package-lock.json
+      - run: npm ci
+      - run: npm test
+
   openapi:
     runs-on: ubuntu-latest
     steps:
