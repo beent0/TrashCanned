@@ -1,0 +1,60 @@
+# Local stack: docker compose up --build  ->  http://localhost:8080
+x-backend: &backend
+  restart: unless-stopped
+  environment: &backend-env
+    DATABASE_URL: postgresql://${POSTGRES_USER:-trashcanned}:${POSTGRES_PASSWORD:-trashcanned}@postgres:5432/${POSTGRES_DB:-trashcanned}
+    MQTT_URL: mqtt://mosquitto:1883
+  depends_on:
+    postgres: { condition: service_healthy }
+    mosquitto: { condition: service_started }
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-trashcanned}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-trashcanned}
+      POSTGRES_DB: ${POSTGRES_DB:-trashcanned}
+    ports: ["5432:5432"]
+    volumes: [pgdata:/var/lib/postgresql/data]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER}"]
+      interval: 5s
+      retries: 10
+
+  mosquitto:
+    image: eclipse-mosquitto:2
+    ports: ["1883:1883"]
+    volumes:
+      - ./mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto-data:/mosquitto/data
+
+  core:
+    <<: *backend
+    build: { context: ., target: core }
+
+  monitorizacao:
+    <<: *backend
+    build: { context: ., target: monitorizacao }
+
+  experience:
+    <<: *backend
+    build: { context: ., target: experience }
+    environment:
+      <<: *backend-env
+      CORE_URL: http://core:3000
+      MONITORIZACAO_URL: http://monitorizacao:3000
+    ports: ["8080:3000"]
+
+  simulator:
+    build: ./simulator
+    restart: unless-stopped
+    environment:
+      MQTT_URL: mqtt://mosquitto:1883
+      SENSORS: 3
+      INTERVAL_MS: 5000
+    depends_on: [mosquitto]
+
+volumes:
+  pgdata:
+  mosquitto-data:
