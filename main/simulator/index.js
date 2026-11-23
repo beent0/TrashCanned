@@ -69,6 +69,20 @@ const sensores = configs.map((c) => {
   return s;
 });
 
+// Test-only: learns about pickups so the sensor restarts from an empty container. Sensors themselves never subscribe (NFR-34).
+const observador = ligar('sim-observador', env.OBSERVER_USERNAME, env.OBSERVER_PASSWORD);
+observador.on('connect', () => observador.subscribe('eventos/recolha/registada', { qos: 1 }));
+observador.on('message', (_topico, payload) => {
+  try {
+    const s = sensores.find((x) => x.id === JSON.parse(payload).sensor_id);
+    if (!s) return;
+    s.nivel = 0;
+    console.log(`${s.id}: recolha registada, nível reposto a 0`);
+  } catch (err) {
+    console.error(`sim-observador: mensagem inválida: ${err.message}`);
+  }
+});
+
 let ultimo = inicio;
 setInterval(() => {
   const agora = Date.now();
